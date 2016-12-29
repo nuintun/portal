@@ -127,8 +127,6 @@
         'var ' + data + ' = ' + context + '.data;\n  ' +
         // 辅助函数引用
         'var ' + helpers + ' = ' + context + '.helpers;\n\n  ' +
-        // 初始化当前行
-        context + '.line = 1;\n  ' +
         // 模板拼接
         context + ".output += '" +
         // 左分界符
@@ -175,7 +173,7 @@
          */
         render: function(data) {
           return compiler.call({
-            line: 0,
+            line: 1,
             output: '',
             data: data,
             helpers: that.helpers,
