@@ -26,16 +26,16 @@ var RE_DYNAMIC_VARIABLE = /(^|[^\w\u00c0-\uFFFF_])@(?=\[)/g;
  *
  * @constructor
  * @export
- * @param {String} open 左分隔符
- * @param {String} close 右分隔符
+ * @param {String} open 左分界符
+ * @param {String} close 右分界符
  * @returns {Portal}
  */
 export default function Portal(open, close) {
   var context = this;
 
-  // 左分隔符
+  // 左分界符
   context.open = new RegExp(Utils.escapeRegex(open || '<%'), 'g');
-  // 右分隔符
+  // 右分界符
   context.close = new RegExp(Utils.escapeRegex(close || '%>'), 'g');
   // 辅助函数
   context.helpers = {};
