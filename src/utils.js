@@ -35,9 +35,9 @@ var RE_REGEX_ESCAPE = /[\[\]\\.^|()*+$:?!-]/g;
 /**
  * 正则元字符转义
  *
- * @param string
+ * @param regex
  * @returns {String}
  */
-export function escapeRegex(string) {
-  return string.replace(RE_REGEX_ESCAPE, '\\$&');
+export function escapeRegex(regex) {
+  return regex.replace(RE_REGEX_ESCAPE, '\\$&');
 }
