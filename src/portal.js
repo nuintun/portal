@@ -134,7 +134,7 @@ Portal.prototype = {
           helpers: that.helpers
         });
       }
-    }
+    };
   },
   /**
    * 添加辅助函数
@@ -145,10 +145,6 @@ Portal.prototype = {
    * @returns {Portal}
    */
   addHelper: function(name, fn) {
-    if (name === 'escapeHTML') {
-      throw 'TemplateError: can not rewrite native helper';
-    }
-
     this.helpers[name] = fn;
 
     return this;
@@ -161,10 +157,6 @@ Portal.prototype = {
    * @returns {Portal}
    */
   removeHelper: function(name) {
-    if (name === 'escapeHTML') {
-      throw 'TemplateError: can not remove native helper';
-    }
-
     delete this.helpers[name];
 
     return this;
