@@ -113,6 +113,7 @@
       var context = '__CONTEXT' + uid;
       var helpers = '__HELPERS' + uid;
       var data = '__DATA' + uid;
+      var output = '__OUTPUT' + uid;
       // 解析模板
       var code =
         "'use strict';\n\n" +
@@ -120,8 +121,12 @@
         "try {\n  " +
         // 保存上下文
         'var ' + context + ' = this;\n  ' +
-        'var ' + helpers + ' = ' + context + '.helpers;\n  ' +
-        'var ' + data + ' = ' + context + '.data;\n\n  ' +
+        // 数据引用
+        'var ' + data + ' = ' + context + '.data;\n  ' +
+        // 辅助函数引用
+        'var ' + helpers + ' = ' + context + '.helpers;\n\n  ' +
+        // 初始化当前行
+        context + '.line = 1;\n  ' +
         // 模板拼接
         context + ".output += '" +
         // 左分界符
@@ -148,10 +153,6 @@
         .replace(RE_STATIC_VARIABLE, '$1' + data + '.')
         // 动态属性读取逻辑处理
         .replace(RE_DYNAMIC_VARIABLE, '$1' + data)
-        // 静态属性读取逻辑处理
-        .replace(RE_STATIC_VARIABLE, '$1' + context + '.data.')
-        // 动态属性读取逻辑处理
-        .replace(RE_DYNAMIC_VARIABLE, '$1' + context + '.data')
         // 抽取模板逻辑
         .replace(RE_COMPILER_LOGIC, "';\n  $1\n  " + context + ".output += '") +
         // 输出结果
@@ -176,7 +177,7 @@
          */
         render: function(data) {
           return compiler.call({
-            line: 1,
+            line: 0,
             output: '',
             data: data,
             helpers: that.helpers
