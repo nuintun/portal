@@ -5,6 +5,14 @@
 }(this, (function () { 'use strict';
 
   // HTML转义映射表
+  var HTML_ESCAPE_MAP = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '\x22': '&#x22;',
+    '\x27': '&#x27;'
+  };
+
   /**
    * HTML转义
    * 防止XSS攻击
@@ -12,7 +20,11 @@
    * @export
    * @param {String} html
    */
-
+  function escapeHTML(html) {
+    return String(html).replace(/[&<>\'\"]/g, function(char) {
+      return HTML_ESCAPE_MAP[char];
+    });
+  }
 
   /**
    * 获取当前时间毫秒

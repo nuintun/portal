@@ -131,7 +131,7 @@ Portal.prototype = {
           output: '',
           data: data,
           helpers: that.helpers,
-          escapeHTML: escapeHTML
+          escapeHTML: Utils.escapeHTML
         });
       }
     };
