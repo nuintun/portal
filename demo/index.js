@@ -44,4 +44,4 @@ var view = `
 
 var portal = new Portal();
 
-console.log(portal.compile(view).compiler.toString());
+console.log(portal.compile(view).render.toString());

@@ -114,25 +114,32 @@ Portal.prototype = {
     // 模板渲染引擎
     var compiler = new Function(code.replace(new RegExp(Utils.escapeRegex('\n' + context + ".output += '';") + '\n', 'g'), '\n'));
 
-    // 返回渲染接口
-    return {
-      compiler: compiler,
-      /**
-       * render
-       *
-       * @param {Object|Array} data
-       * returns {String}
-       */
-      render: function(data) {
-        return compiler.call({
-          line: 1,
-          output: '',
-          data: data,
-          helpers: that.helpers,
-          escapeHTML: Utils.escapeHTML
-        });
-      }
+    /**
+     * render
+     *
+     * @param {Object|Array} data
+     * returns {String}
+     */
+    function render(data) {
+      return compiler.call({
+        line: 1,
+        output: '',
+        data: data,
+        helpers: that.helpers,
+        escapeHTML: Utils.escapeHTML
+      });
+    }
+
+    /**
+     * 输出字符串
+     * 覆写toString方法，使渲染函数显示更友好
+     */
+    render.toString = function() {
+      return compiler.toString();
     };
+
+    // 返回渲染接口
+    return { render: render };
   },
   /**
    * 添加辅助函数
