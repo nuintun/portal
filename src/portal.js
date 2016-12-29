@@ -6,11 +6,11 @@ var RE_LINE_SPLIT = /\n|\r\n/g;
 var RE_TRIM_SPACE = /^\s*|\s*$/g;
 // 逻辑抽取正则
 var RE_COMPILER_LOGIC = /\x11\s*(.+?)\s*\x13/g;
-// 转码输出正则
+// 转义输出正则
 var RE_ESCAPE_OUTPUT = /\x11=\s*(.+?)\s*\x13/g;
-// 原始输出正则
+// 非转义输出正则
 var RE_ORIGIN_OUTPUT = /\x11==\s*(.+?)\s*\x13/g;
-// 单引号转码正则
+// 单引号转义正则
 var RE_ESCAPE_QUOTE = /'(?![^\x11\x13]+?\x13)/g;
 // 静态辅助函数调用正则
 var RE_STATIC_HELPER = /(^|[^\w\u00c0-\uFFFF_]):(?=\w)/g;
@@ -80,7 +80,7 @@ Portal.prototype = {
       view.replace(that.open, '\x11')
       // 右分界符
       .replace(that.close, '\x13')
-      // 单引号转码
+      // 单引号转义
       .replace(RE_ESCAPE_QUOTE, '\\x27')
       // 空格去除过滤
       .replace(RE_TRIM_SPACE, '')
@@ -88,9 +88,9 @@ Portal.prototype = {
       .replace(RE_LINE_SPLIT, function() {
         return "';\n  " + context + ".line = " + (++line) + ";\n  " + context + ".output += '\\n";
       })
-      // 非转码输出
+      // 非转义输出
       .replace(RE_ORIGIN_OUTPUT, "' + ($1) + '")
-      // 转码输出
+      // 转义输出
       .replace(RE_ESCAPE_OUTPUT, "' + " + helpers + ".escapeHTML($1) + '")
       // 静态辅助方法调用逻辑处理
       .replace(RE_STATIC_HELPER, '$1' + helpers + '.')
