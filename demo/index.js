@@ -16,7 +16,7 @@ var view = `
       data-role="control"
       data-action-id="<%= index %>"
       <%= control.autofocus ? ' autofocus' : '' %>>
-      <%== control.value %>
+      <%== :link(control.value) %>
     </a>
     <% }); %>
   </div>
