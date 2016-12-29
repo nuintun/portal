@@ -149,12 +149,8 @@
         "';\n\n  return " + context + ".output;\n} catch (e) {\n  " +
         // 异常捕获
         "throw 'TemplateError: ' + e + ' (at ' + ' line ' + " + context + ".line + ')';\n}";
-
-      // 清理正则
-      var RE_CLEAN = new RegExp(escapeRegex('\n' + context + ".output += '';") + '\n', 'g');
-
       // 模板渲染引擎
-      var compiler = new Function(code.replace(RE_CLEAN, '\n'));
+      var compiler = new Function(code.replace(new RegExp(escapeRegex('\n' + context + ".output += '';") + '\n', 'g'), '\n'));
 
       // 返回渲染接口
       return {
