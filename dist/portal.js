@@ -4,7 +4,7 @@
   (global.Portal = factory());
 }(this, (function () { 'use strict';
 
-  // HTML 转码映射表
+  // HTML转义映射表
   var HTML_ESCAPE_MAP = {
     '&': '&amp;',
     '<': '&lt;',
