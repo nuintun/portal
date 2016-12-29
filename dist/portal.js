@@ -5,14 +5,6 @@
 }(this, (function () { 'use strict';
 
   // HTML转义映射表
-  var HTML_ESCAPE_MAP = {
-    '&': '&amp;',
-    '<': '&lt;',
-    '>': '&gt;',
-    '\x22': '&#x22;',
-    '\x27': '&#x27;'
-  };
-
   /**
    * HTML转义
    * 防止XSS攻击
@@ -20,11 +12,7 @@
    * @export
    * @param {String} html
    */
-  function escapeHTML(html) {
-    return String(html).replace(/[&<>\'\"]/g, function(char) {
-      return HTML_ESCAPE_MAP[char];
-    });
-  }
+
 
   /**
    * 获取当前时间毫秒
@@ -81,15 +69,17 @@
   function Portal(open, close) {
     var context = this;
 
+    // 左分隔符
     context.open = new RegExp(escapeRegex(open || '<%'), 'g');
+    // 右分隔符
     context.close = new RegExp(escapeRegex(close || '%>'), 'g');
+    // 辅助函数
+    context.helpers = {};
   }
 
   Portal.prototype = {
     // 辅助函数
-    helpers: {
-      escapeHTML: escapeHTML
-    },
+    helpers: {},
     /**
      * 编译视图模板
      *
@@ -144,7 +134,7 @@
         // 非转义输出
         .replace(RE_ORIGIN_OUTPUT, "' + ($1) + '")
         // 转义输出
-        .replace(RE_ESCAPE_OUTPUT, "' + " + helpers + ".escapeHTML($1) + '")
+        .replace(RE_ESCAPE_OUTPUT, "' + " + context + ".escapeHTML($1) + '")
         // 静态辅助方法调用逻辑处理
         .replace(RE_STATIC_HELPER, '$1' + helpers + '.')
         // 动态辅助方法调用逻辑处理
@@ -180,7 +170,8 @@
             line: 0,
             output: '',
             data: data,
-            helpers: that.helpers
+            helpers: that.helpers,
+            escapeHTML: escapeHTML
           });
         }
       };

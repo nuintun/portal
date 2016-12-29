@@ -33,15 +33,17 @@ var RE_DYNAMIC_VARIABLE = /(^|[^\w\u00c0-\uFFFF_])@(?=\[)/g;
 export default function Portal(open, close) {
   var context = this;
 
+  // 左分隔符
   context.open = new RegExp(Utils.escapeRegex(open || '<%'), 'g');
+  // 右分隔符
   context.close = new RegExp(Utils.escapeRegex(close || '%>'), 'g');
+  // 辅助函数
+  context.helpers = {};
 }
 
 Portal.prototype = {
   // 辅助函数
-  helpers: {
-    escapeHTML: Utils.escapeHTML
-  },
+  helpers: {},
   /**
    * 编译视图模板
    *
@@ -96,7 +98,7 @@ Portal.prototype = {
       // 非转义输出
       .replace(RE_ORIGIN_OUTPUT, "' + ($1) + '")
       // 转义输出
-      .replace(RE_ESCAPE_OUTPUT, "' + " + helpers + ".escapeHTML($1) + '")
+      .replace(RE_ESCAPE_OUTPUT, "' + " + context + ".escapeHTML($1) + '")
       // 静态辅助方法调用逻辑处理
       .replace(RE_STATIC_HELPER, '$1' + helpers + '.')
       // 动态辅助方法调用逻辑处理
@@ -132,7 +134,8 @@ Portal.prototype = {
           line: 0,
           output: '',
           data: data,
-          helpers: that.helpers
+          helpers: that.helpers,
+          escapeHTML: escapeHTML
         });
       }
     };
