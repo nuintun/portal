@@ -106,7 +106,7 @@
       // 行数
       var row = 1;
       // 实例指针
-      var that = this;
+      var context = this;
       // 变量随机标识
       var uid = now();
       // 渲染函数行数变量名
@@ -115,29 +115,23 @@
       var data = '__DATA' + uid;
       // 渲染函数输出变量名
       var output = '__OUTPUT' + uid;
-      // 渲染函数this变量名
-      var context = '__CONTEXT' + uid;
+      // 转义HTML，防止XSS攻击
+      var escape = '__ESCAPE' + uid;
       // 渲染函数辅助函数变量名
       var helpers = '__HELPERS' + uid;
       // 解析模板
       var code =
         "'use strict';\n\n" +
         'var ' + line + ' = 1;\n' +
-        'var ' + output + " = '';\n" +
-        // 保存上下文
-        'var ' + context + ' = this;\n' +
-        // 数据引用
-        'var ' + data + ' = ' + context + '.data;\n' +
-        // 辅助函数引用
-        'var ' + helpers + ' = ' + context + '.helpers;\n\n' +
+        'var ' + output + " = '';\n\n" +
         // 入口
         'try {\n  ' +
         // 模板拼接
         output + " += '" +
         // 左分界符
-        String(view).replace(that.open, '\x11')
+        String(view).replace(context.open, '\x11')
         // 右分界符
-        .replace(that.close, '\x13')
+        .replace(context.close, '\x13')
         // 单引号转义
         .replace(RE_ESCAPE_QUOTE, '\\x27')
         // 空格去除过滤
@@ -149,7 +143,7 @@
         // 非转义输出
         .replace(RE_ORIGIN_OUTPUT, "' + ($1) + '")
         // 转义输出
-        .replace(RE_ESCAPE_OUTPUT, "' + " + context + ".escapeHTML($1) + '")
+        .replace(RE_ESCAPE_OUTPUT, "' + " + escape + "($1) + '")
         // 静态辅助方法调用逻辑处理
         .replace(RE_STATIC_HELPER, '$1' + helpers + '.')
         // 动态辅助方法调用逻辑处理
@@ -165,7 +159,12 @@
         // 异常捕获
         "} catch (e) {\n  throw 'TemplateError: ' + e + ' (at line ' + " + line + " + ')';\n}";
       // 模板渲染引擎
-      var compiler = new Function(code.replace(new RegExp('\x20*' + escapeRegex(output + " += '';") + '\n', 'g'), ''));
+      var compiler = new Function(
+        data,
+        escape,
+        helpers,
+        code.replace(new RegExp('\x20*' + escapeRegex(output + " += '';") + '\n', 'g'), '')
+      );
 
       /**
        * render
@@ -174,11 +173,7 @@
        * returns {String}
        */
       function render(data) {
-        return compiler.call({
-          data: data,
-          helpers: that.helpers,
-          escapeHTML: escapeHTML
-        });
+        return compiler.call(data, data, escapeHTML, context.helpers);
       }
 
       /**
