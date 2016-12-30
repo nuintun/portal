@@ -155,7 +155,7 @@
         // 异常捕获
         "throw 'TemplateError: ' + e + ' (at ' + ' line ' + " + context + ".line + ')';\n}";
       // 模板渲染引擎
-      var compiler = new Function(code.replace(new RegExp(escapeRegex('\n' + context + ".output += '';") + '\n', 'g'), '\n'));
+      var compiler = new Function(code.replace(new RegExp(escapeRegex(context + ".output += '';") + '\n  ', 'g'), ''));
 
       /**
        * render
