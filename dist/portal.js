@@ -101,29 +101,32 @@
      */
     compile: function(view) {
       // 行数
-      var line = 1;
+      var row = 1;
       // 实例指针
       var that = this;
       // 身份标识
       var uid = now();
+      var line = '__LINE' + uid;
+      var data = '__DATA' + uid;
+      var output = '__OUTPUT' + uid;
       // 保存 this 变量
       var context = '__CONTEXT' + uid;
       var helpers = '__HELPERS' + uid;
-      var data = '__DATA' + uid;
-      var output = '__OUTPUT' + uid;
       // 解析模板
       var code =
         "'use strict';\n\n" +
+        'var ' + line + ' = 1;\n' +
+        'var ' + output + " = '';\n" +
+        // 保存上下文
+        'var ' + context + ' = this;\n' +
+        // 数据引用
+        'var ' + data + ' = ' + context + '.data;\n' +
+        // 辅助函数引用
+        'var ' + helpers + ' = ' + context + '.helpers;\n\n' +
         // 入口
         "try {\n  " +
-        // 保存上下文
-        'var ' + context + ' = this;\n  ' +
-        // 数据引用
-        'var ' + data + ' = ' + context + '.data;\n  ' +
-        // 辅助函数引用
-        'var ' + helpers + ' = ' + context + '.helpers;\n\n  ' +
         // 模板拼接
-        context + ".output += '" +
+        output + " += '" +
         // 左分界符
         String(view).replace(that.open, '\x11')
         // 右分界符
@@ -134,7 +137,7 @@
         .replace(RE_TRIM_SPACE, '')
         // 拆行
         .replace(RE_LINE_SPLIT, function() {
-          return "';\n  " + context + ".line = " + (++line) + ";\n  " + context + ".output += '\\n";
+          return "';\n  " + line + " = " + (++row) + ";\n  " + output + " += '\\n";
         })
         // 非转义输出
         .replace(RE_ORIGIN_OUTPUT, "' + ($1) + '")
@@ -149,13 +152,13 @@
         // 动态属性读取逻辑处理
         .replace(RE_DYNAMIC_VARIABLE, '$1' + data)
         // 抽取模板逻辑
-        .replace(RE_COMPILER_LOGIC, "';\n  $1\n  " + context + ".output += '") +
+        .replace(RE_COMPILER_LOGIC, "';\n  $1\n  " + output + " += '") +
         // 输出结果
-        "';\n\n  return " + context + ".output;\n} catch (e) {\n  " +
+        "';\n\n  return " + output + ";\n} catch (e) {\n  " +
         // 异常捕获
-        "throw 'TemplateError: ' + e + ' (at ' + ' line ' + " + context + ".line + ')';\n}";
+        "throw 'TemplateError: ' + e + ' (at ' + ' line ' + " + line + " + ')';\n}";
       // 模板渲染引擎
-      var compiler = new Function(code.replace(new RegExp('\x20*' + escapeRegex(context + ".output += '';") + '\n', 'g'), ''));
+      var compiler = new Function(code.replace(new RegExp('\x20*' + escapeRegex(output + " += '';") + '\n', 'g'), ''));
 
       /**
        * render
@@ -165,8 +168,6 @@
        */
       function render(data) {
         return compiler.call({
-          line: 1,
-          output: '',
           data: data,
           helpers: that.helpers,
           escapeHTML: escapeHTML
