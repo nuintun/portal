@@ -4,15 +4,15 @@ const artTemplate = require('./art-template')
 
 const suite = new Benchmark.Suite;
 
-const art = `
-<% for (var i = 0, l = list.length; i < l; i ++) { %>
-  <li>用户: <%== list[i].user %>/ 网站：<%== list[i].site %></li>
-<% } %>
-`;
-
 const prt = `
 <% for (var i = 0, l = @list.length; i < l; i ++) { %>
   <li>用户: <%== @list[i].user %>/ 网站：<%== @list[i].site %></li>
+<% } %>
+`;
+
+const art = `
+<% for (var i = 0, l = list.length; i < l; i ++) { %>
+  <li>用户: <%== list[i].user %>/ 网站：<%== list[i].site %></li>
 <% } %>
 `;
 
@@ -30,8 +30,8 @@ for (var i = 0; i < 100; i++) {
   });
 };
 
-var artRender = artTemplate.compile(art);
 var prtRender = new Portal().compile(prt).render;
+var artRender = artTemplate.compile(art, { debug: true, cache: false });
 
 // add tests
 suite

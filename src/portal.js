@@ -30,13 +30,16 @@ var RE_DYNAMIC_VARIABLE = /(^|[^\w\u00c0-\uFFFF_])@(?=\[)/g;
  * @param {String} close 右分界符
  * @returns {Portal}
  */
-export default function Portal(open, close) {
+export default function Portal(options) {
   var context = this;
 
+  // 初始化配置
+  options = options || {};
+
   // 左分界符
-  context.open = new RegExp(Utils.escapeRegex(open || '<%'), 'g');
+  context.open = new RegExp(Utils.escapeRegex(options.open || '<%'), 'g');
   // 右分界符
-  context.close = new RegExp(Utils.escapeRegex(close || '%>'), 'g');
+  context.close = new RegExp(Utils.escapeRegex(options.close || '%>'), 'g');
   // 辅助函数
   context.helpers = {};
 }
@@ -80,7 +83,7 @@ Portal.prototype = {
       // 辅助函数引用
       'var ' + helpers + ' = ' + context + '.helpers;\n\n' +
       // 入口
-      "try {\n  " +
+      'try {\n  ' +
       // 模板拼接
       output + " += '" +
       // 左分界符
@@ -93,7 +96,7 @@ Portal.prototype = {
       .replace(RE_TRIM_SPACE, '')
       // 拆行
       .replace(RE_LINE_SPLIT, function() {
-        return "';\n  " + line + " = " + (++row) + ";\n  " + output + " += '\\n";
+        return "';\n  " + line + ' = ' + (++row) + ';\n  ' + output + " += '\\n";
       })
       // 非转义输出
       .replace(RE_ORIGIN_OUTPUT, "' + ($1) + '")
@@ -110,9 +113,9 @@ Portal.prototype = {
       // 抽取模板逻辑
       .replace(RE_COMPILER_LOGIC, "';\n  $1\n  " + output + " += '") +
       // 输出结果
-      "';\n\n  return " + output + ";\n} catch (e) {\n  " +
+      "';\n\n  return " + output + ';\n' +
       // 异常捕获
-      "throw 'TemplateError: ' + e + ' (at line ' + " + line + " + ')';\n}";
+      "} catch (e) {\n  throw 'TemplateError: ' + e + ' (at line ' + " + line + " + ')';\n}";
     // 模板渲染引擎
     var compiler = new Function(code.replace(new RegExp('\x20*' + Utils.escapeRegex(output + " += '';") + '\n', 'g'), ''));
 
