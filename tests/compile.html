@@ -2,31 +2,15 @@
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>template speed</title>
+    <title>compile speed</title>
     <script src="./jquery.js"></script>
     <script src="./highcharts.js"></script>
     <script src="../dist/portal.js"></script>
     <script src="./art-template.js"></script>
     <script src="./juicer.js"></script>
     <script>
-      // 数据量
-      var length = 100;
       // 渲染次数
-      var number = 1000;
-
-      var data = {
-        list: []
-      };
-
-      for (var i = 0; i < length; i++) {
-        data.list.push({
-          index: i,
-          user: '<strong style="color:red">糖饼</strong>',
-          site: 'http://www.planeart.cn',
-          weibo: 'http://weibo.com/planeart',
-          QQweibo: 'http://t.qq.com/tangbin'
-        });
-      };
+      var number = 100;
 
       // 待测试的引擎列表
       var testList = [
@@ -34,10 +18,9 @@
           name: 'Portal',
           tester: function() {
             var source = document.getElementById('portal').innerHTML;
-            var fn = new Portal().compile(source).render;
 
             for (var i = 0; i < number; i++) {
-              fn(data);
+              new Portal().compile(source)
             }
           }
         },
@@ -45,10 +28,9 @@
           name: 'artTemplate',
           tester: function() {
             var source = document.getElementById('template').innerHTML;
-            var fn = template.compile(source, { debug: true });
 
             for (var i = 0; i < number; i++) {
-              fn(data);
+              template.compile(source, { debug: true, cache: false });
             }
           }
         },
@@ -56,14 +38,14 @@
           name: 'juicer',
           tester: function() {
             juicer.set({
-              'errorhandling': true
+              errorhandling: true,
+              cache: false
             });
 
             var source = document.getElementById('juicer').innerHTML;
-            var fn = juicer(source);
 
             for (var i = 0; i < number; i++) {
-              fn.render(data);
+              juicer(source);
             }
           }
         }
@@ -208,10 +190,9 @@
     </script>
   </head>
   <body>
-    <h1>引擎渲染速度测试</h1>
+    <h1>引擎编译速度测试</h1>
     <p>
-      <strong><script>document.write(length);</script></strong> 条数据 ×
-      <strong><script>document.write(number);</script></strong> 次渲染测试 [escape:false, debug:true]
+      <strong><script>document.write(number);</script></strong> 次编译测试 [cache:false, debug:true]
     </p>
     <p><em>建议在拥有 v8 javascript 引擎的 chrome 浏览器上进行测试，避免浏览器停止响应！</em></p>
     <p>
