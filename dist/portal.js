@@ -104,13 +104,17 @@
       var row = 1;
       // 实例指针
       var that = this;
-      // 身份标识
+      // 变量随机标识
       var uid = now();
+      // 渲染函数行数变量名
       var line = '__LINE' + uid;
+      // 渲染函数数据变量名
       var data = '__DATA' + uid;
+      // 渲染函数输出变量名
       var output = '__OUTPUT' + uid;
-      // 保存 this 变量
+      // 渲染函数this变量名
       var context = '__CONTEXT' + uid;
+      // 渲染函数辅助函数变量名
       var helpers = '__HELPERS' + uid;
       // 解析模板
       var code =
