@@ -100,11 +100,6 @@
      * @returns {Object} { compiler, render } 返回渲染函数和模板编译后的原始函数
      */
     compile: function(view) {
-      // 模板必须史字符串
-      if ((!view && view !== '') || typeof view.valueOf() !== 'string') {
-        throw TypeError('TemplateError: view must be a string');
-      }
-
       // 行数
       var line = 1;
       // 实例指针
@@ -130,7 +125,7 @@
         // 模板拼接
         context + ".output += '" +
         // 左分界符
-        view.replace(that.open, '\x11')
+        String(view).replace(that.open, '\x11')
         // 右分界符
         .replace(that.close, '\x13')
         // 单引号转义
