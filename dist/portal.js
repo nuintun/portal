@@ -160,7 +160,7 @@
         // 输出结果
         "';\n\n  return " + output + ";\n} catch (e) {\n  " +
         // 异常捕获
-        "throw 'TemplateError: ' + e + ' (at ' + ' line ' + " + line + " + ')';\n}";
+        "throw 'TemplateError: ' + e + ' (at line ' + " + line + " + ')';\n}";
       // 模板渲染引擎
       var compiler = new Function(code.replace(new RegExp('\x20*' + escapeRegex(output + " += '';") + '\n', 'g'), ''));
 
