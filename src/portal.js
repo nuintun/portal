@@ -71,17 +71,17 @@ Portal.prototype = {
     var escape = '__ESCAPE' + uid;
     // 渲染函数辅助函数变量名
     var helpers = '__HELPERS' + uid;
+
     // 解析模板
-    var code =
-      "'use strict';\n\n" +
-      'var ' + line + ' = 1;\n' +
-      'var ' + output + " = '';\n\n" +
+    var code = "'use strict';\n\n"
+      + 'var ' + line + ' = 1;\n'
+      + 'var ' + output + " = '';\n\n"
       // 入口
-      'try {\n  ' +
+      + 'try {\n  '
       // 模板拼接
-      output + " += '" +
+      + output + " += '"
       // 左分界符
-      String(view).replace(context.open, '\x11')
+      + String(view).replace(context.open, '\x11')
       // 右分界符
       .replace(context.close, '\x13')
       // 单引号转义
@@ -105,11 +105,12 @@ Portal.prototype = {
       // 动态属性读取逻辑处理
       .replace(RE_DYNAMIC_VARIABLE, '$1' + data)
       // 抽取模板逻辑
-      .replace(RE_COMPILER_LOGIC, "';\n  $1\n  " + output + " += '") +
+      .replace(RE_COMPILER_LOGIC, "';\n  $1\n  " + output + " += '")
       // 输出结果
-      "';\n\n  return " + output + ';\n' +
+      + "';\n\n  return " + output + ';\n'
       // 异常捕获
-      "} catch (e) {\n  throw 'TemplateError: ' + e + ' (at line ' + " + line + " + ')';\n}";
+      + "} catch (e) {\n  throw 'TemplateError: ' + e + ' (at line ' + " + line + " + ')';\n}";
+
     // 模板渲染引擎
     var compiler = new Function(
       data,

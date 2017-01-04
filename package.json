@@ -28,7 +28,7 @@
   "jsnext:main": "src/portal.js",
   "main": "dist/portal.js",
   "devDependencies": {
-    "rollup": "^0.39.2",
+    "rollup": "^0.40.0",
     "uglify-js": "^2.7.5",
     "benchmark": "^2.1.3"
   },
