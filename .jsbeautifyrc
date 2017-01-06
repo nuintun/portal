@@ -14,6 +14,7 @@
   "indent_head_inner_html": true,
   "indent_inner_html": true,
   "indent_scripts": "normal",
+  "wrap_attributes": "auto",
   "wrap_attributes_indent_size": 2,
   "unformatted": [
     "a",
