@@ -25,13 +25,16 @@
 ### Example
 
 ```template:```
+
 ```template
 <% @items.forEach(function(item) { %>
   <img src="@item.src" alt="image" />
   <%== :link(item.href, 'download') %>
 <% } %>
 ```
+
 ```use:```
+
 ```js
 // Create a new instance
 var portal = new Portal();
