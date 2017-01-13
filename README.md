@@ -26,7 +26,7 @@
 
 ```template:```
 
-```template
+```html
 <% @items.forEach(function(item) { %>
   <img src="@item.src" alt="image" />
   <%== :link(item.href, 'download') %>
