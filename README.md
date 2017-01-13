@@ -24,8 +24,7 @@
 
 ### Example
 
-```template:```
-
+template:
 ```html
 <% @items.forEach(function(item) { %>
   <img src="@item.src" alt="image" />
@@ -33,8 +32,7 @@
 <% } %>
 ```
 
-```use:```
-
+usage:
 ```js
 // Create a new instance
 var portal = new Portal();
