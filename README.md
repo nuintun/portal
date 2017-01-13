@@ -18,6 +18,10 @@
       * name: the name of helper
     * compile(template: String): compile a template string
       * template: template string
+        * ```:``` call helper
+        * ```@``` read variable
+        * ```=``` output html escape variable
+        * ```==``` output origin variable
       * return: { render: Function }
         * render(data: Object): render function
           * data: the template data
