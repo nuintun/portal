@@ -19,9 +19,9 @@
     * compile(template: String): compile a template string
       * template: template string
         * ```:``` call helper
-        * ```@``` read variable
-        * ```=``` output html escape variable
-        * ```==``` output origin variable
+        * ```@``` read template data property
+        * ```=``` output html escape string
+        * ```==``` output origin string
       * return: { render: Function }
         * render(data: Object): render function
           * data: the template data
@@ -31,7 +31,7 @@
 template:
 ```html
 <% @items.forEach(function(item) { %>
-  <img src="<%= @item.src %>" alt="image" />
+  <img src="<%= item.src %>" alt="image" />
   <%== :link(item.href, 'download') %>
 <% } %>
 ```
