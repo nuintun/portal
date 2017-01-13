@@ -60,7 +60,7 @@ Portal.prototype = {
     // 实例指针
     var context = this;
     // 变量随机标识
-    var uid = Utils.now();
+    var uid = +new Date();
     // 渲染函数行数变量名
     var line = '__LINE' + uid;
     // 渲染函数数据变量名

@@ -20,15 +20,6 @@ export function escapeHTML(html) {
   });
 }
 
-/**
- * 获取当前时间毫秒
- *
- * @returns {Number}
- */
-export var now = Date.now || function() {
-  return +new Date();
-};
-
 // 元字符转码正则
 var RE_REGEX_ESCAPE = /[\[\]\\.^|()*+$:?!-]/g;
 
