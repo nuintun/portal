@@ -1,7 +1,6 @@
 # portal
 
 >A micro html template engine
-
 >[![Dependencies][david-image]][david-url]
 
 ### API
