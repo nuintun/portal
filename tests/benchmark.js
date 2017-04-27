@@ -23,10 +23,10 @@ const data = {
 for (var i = 0; i < 100; i++) {
   data.list.push({
     index: i,
-    user: '<strong style="color:red">糖饼</strong>',
-    site: 'http://www.planeart.cn',
-    weibo: 'http://weibo.com/planeart',
-    QQweibo: 'http://t.qq.com/tangbin'
+    user: '<strong style="color:red">nuintun</strong>',
+    site: 'https://github.com/nuintun',
+    weibo: 'http://weibo.com/235679326',
+    QQweibo: 'http://t.qq.com/nuintun'
   });
 };
 

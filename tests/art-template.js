@@ -13,11 +13,11 @@
    * @return  {String, Function}  渲染好的HTML字符串或者渲染方法
    */
   var template = function(filename, content) {
-    return typeof content === 'string' ?
-      compile(content, {
+    return typeof content === 'string'
+      ? compile(content, {
         filename: filename
-      }) :
-      renderFile(filename, content);
+      })
+      : renderFile(filename, content);
   };
 
   template.version = '3.0.0';
@@ -285,22 +285,20 @@
   // 静态分析模板变量
   var KEYWORDS =
     // 关键字
-    'break,case,catch,continue,debugger,default,delete,do,else,false' +
-    ',finally,for,function,if,in,instanceof,new,null,return,switch,this' +
-    ',throw,true,try,typeof,var,void,while,with'
+    'break,case,catch,continue,debugger,default,delete,do,else,false'
+    + ',finally,for,function,if,in,instanceof,new,null,return,switch,this'
+    + ',throw,true,try,typeof,var,void,while,with'
 
-  // 保留字
-  +',abstract,boolean,byte,char,class,const,double,enum,export,extends' +
-  ',final,float,goto,implements,import,int,interface,long,native' +
-  ',package,private,protected,public,short,static,super,synchronized' +
-  ',throws,transient,volatile'
+    // 保留字
+    + ',abstract,boolean,byte,char,class,const,double,enum,export,extends'
+    + ',final,float,goto,implements,import,int,interface,long,native'
+    + ',package,private,protected,public,short,static,super,synchronized'
+    + ',throws,transient,volatile'
 
-  // ECMA 5 - use strict
-  +
-  ',arguments,let,yield'
+    // ECMA 5 - use strict
+    + ',arguments,let,yield'
 
-  +
-  ',undefined';
+    + ',undefined';
 
   var REMOVE_RE = /\/\*[\w\W]*?\*\/|\/\/[^\n]*\n|\/\/[^\n]*$|"(?:[^"\\]|\\[\w\W])*"|'(?:[^'\\]|\\[\w\W])*'|\s*\.\s*[$\w\.]+/g;
   var SPLIT_RE = /[^\w$]+/g;
@@ -345,24 +343,24 @@
     var isNewEngine = ''.trim; // '__proto__' in {}
     var replaces = isNewEngine ? ["$out='';", "$out+=", ";", "$out"] : ["$out=[];", "$out.push(", ");", "$out.join('')"];
 
-    var concat = isNewEngine ?
-      "$out+=text;return $out;" :
-      "$out.push(text);";
+    var concat = isNewEngine
+      ? "$out+=text;return $out;"
+      : "$out.push(text);";
 
-    var print = "function(){" +
-      "var text=''.concat.apply('',arguments);" +
-      concat +
-      "}";
+    var print = "function(){"
+      + "var text=''.concat.apply('',arguments);"
+      + concat
+      + "}";
 
-    var include = "function(filename,data){" +
-      "data=data||$data;" +
-      "var text=$utils.$include(filename,data,$filename);" +
-      concat +
-      "}";
+    var include = "function(filename,data){"
+      + "data=data||$data;"
+      + "var text=$utils.$include(filename,data,$filename);"
+      + concat
+      + "}";
 
-    var headerCode = "'use strict';" +
-      "var $utils=this,$helpers=$utils.$helpers," +
-      (debug ? "$line=0," : "");
+    var headerCode = "'use strict';"
+      + "var $utils=this,$helpers=$utils.$helpers,"
+      + (debug ? "$line=0," : "");
 
     var mainCode = replaces[0];
 
@@ -396,16 +394,16 @@
 
     // 调试语句
     if (debug) {
-      code = "try{" + code + "}catch(e){" +
-        "throw {" +
-        "filename:$filename," +
-        "name:'Render Error'," +
-        "message:e.message," +
-        "line:$line," +
-        "source:" + stringify(source) +
-        ".split(/\\n/)[$line-1].replace(/^\\s+/,'')" +
-        "};" +
-        "}";
+      code = "try{" + code + "}catch(e){"
+        + "throw {"
+        + "filename:$filename,"
+        + "name:'Render Error',"
+        + "message:e.message,"
+        + "line:$line,"
+        + "source:" + stringify(source)
+        + ".split(/\\n/)[$line-1].replace(/^\\s+/,'')"
+        + "};"
+        + "}";
     }
 
     try {

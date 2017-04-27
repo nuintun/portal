@@ -88,9 +88,9 @@
     }
 
     var empty = function() {};
-    var n = Object.create ?
-      Object.create(proto) :
-      new(empty.prototype = proto, empty);
+    var n = Object.create
+      ? Object.create(proto)
+      : new(empty.prototype = proto, empty);
 
     for (var i in o) {
       if (o.hasOwnProperty(i)) {
@@ -275,12 +275,12 @@
         _fn = '_method.' + _cluster.shift() + '.call({}, ' + [_name].concat(_cluster) + ')';
       }
 
-      return '<%= ' + (_escape ? '_method.__escapehtml.escaping' : '') + '(' +
-        (!options || options.detection !== false ? '_method.__escapehtml.detection' : '') + '(' +
-        _fn +
-        ')' +
-        ')' +
-        ' %>';
+      return '<%= ' + (_escape ? '_method.__escapehtml.escaping' : '') + '('
+        + (!options || options.detection !== false ? '_method.__escapehtml.detection' : '') + '('
+        + _fn
+        + ')'
+        + ')'
+        + ' %>';
     };
 
     this.__removeShell = function(tpl, options) {
@@ -298,64 +298,64 @@
           return $;
         })
 
-      // for expression
-      .replace(juicer.settings.forstart, function($, _name, alias, key) {
+        // for expression
+        .replace(juicer.settings.forstart, function($, _name, alias, key) {
           var alias = alias || 'value',
             key = key && key.substr(1);
           var _iterate = 'i' + _counter++;
-          return '<% ~function() {' +
-            'for(var ' + _iterate + ' in ' + _name + ') {' +
-            'if(' + _name + '.hasOwnProperty(' + _iterate + ')) {' +
-            'var ' + alias + '=' + _name + '[' + _iterate + '];' +
-            (key ? ('var ' + key + '=' + _iterate + ';') : '') +
-            ' %>';
+          return '<% ~function() {'
+            + 'for(var ' + _iterate + ' in ' + _name + ') {'
+            + 'if(' + _name + '.hasOwnProperty(' + _iterate + ')) {'
+            + 'var ' + alias + '=' + _name + '[' + _iterate + '];'
+            + (key ? ('var ' + key + '=' + _iterate + ';') : '')
+            + ' %>';
         })
         .replace(juicer.settings.forend, '<% }}}(); %>')
 
-      // if expression
-      .replace(juicer.settings.ifstart, function($, condition) {
+        // if expression
+        .replace(juicer.settings.ifstart, function($, condition) {
           return '<% if(' + condition + ') { %>';
         })
         .replace(juicer.settings.ifend, '<% } %>')
 
-      // else expression
-      .replace(juicer.settings.elsestart, function($) {
-        return '<% } else { %>';
-      })
+        // else expression
+        .replace(juicer.settings.elsestart, function($) {
+          return '<% } else { %>';
+        })
 
-      // else if expression
-      .replace(juicer.settings.elseifstart, function($, condition) {
-        return '<% } else if(' + condition + ') { %>';
-      })
+        // else if expression
+        .replace(juicer.settings.elseifstart, function($, condition) {
+          return '<% } else if(' + condition + ') { %>';
+        })
 
-      // interpolate without escape
-      .replace(juicer.settings.noneencode, function($, _name) {
-        return that.__interpolate(_name, false, options);
-      })
+        // interpolate without escape
+        .replace(juicer.settings.noneencode, function($, _name) {
+          return that.__interpolate(_name, false, options);
+        })
 
-      // interpolate with escape
-      .replace(juicer.settings.interpolate, function($, _name) {
-        return that.__interpolate(_name, true, options);
-      })
+        // interpolate with escape
+        .replace(juicer.settings.interpolate, function($, _name) {
+          return that.__interpolate(_name, true, options);
+        })
 
-      // clean up comments
-      .replace(juicer.settings.inlinecomment, '')
+        // clean up comments
+        .replace(juicer.settings.inlinecomment, '')
 
-      // range expression
-      .replace(juicer.settings.rangestart, function($, _name, start, end) {
-        var _iterate = 'j' + _counter++;
-        return '<% ~function() {' +
-          'for(var ' + _iterate + '=' + start + ';' + _iterate + '<' + end + ';' + _iterate + '++) {{' +
-          'var ' + _name + '=' + _iterate + ';' +
-          ' %>';
-      })
+        // range expression
+        .replace(juicer.settings.rangestart, function($, _name, start, end) {
+          var _iterate = 'j' + _counter++;
+          return '<% ~function() {'
+            + 'for(var ' + _iterate + '=' + start + ';' + _iterate + '<' + end + ';' + _iterate + '++) {{'
+            + 'var ' + _name + '=' + _iterate + ';'
+            + ' %>';
+        })
 
-      // include sub-template
-      .replace(juicer.settings.include, function($, tpl, data) {
-        // compatible for node.js
-        if (tpl.match(/^file\:\/\//igm)) return $;
-        return '<%= _method.__juicer(' + tpl + ', ' + data + '); %>';
-      });
+        // include sub-template
+        .replace(juicer.settings.include, function($, tpl, data) {
+          // compatible for node.js
+          if (tpl.match(/^file\:\/\//igm)) return $;
+          return '<%= _method.__juicer(' + tpl + ', ' + data + '); %>';
+        });
 
       // exception handling
       if (!options || options.errorhandling !== false) {
@@ -467,8 +467,8 @@
           .split("\t").join("'")
           .replace(/<%=(.+?)%>/g, "';_out+=$1;_out+='")
           .split("<%").join("';")
-          .split("%>").join("_out+='") +
-          "';return _out;";
+          .split("%>").join("_out+='")
+          + "';return _out;";
 
         return buffer;
       }
@@ -483,8 +483,8 @@
         .split("\t").join("'")
         .replace(/<%=(.+?)%>/g, "';_out+=$1;_out+='")
         .split("<%").join("';")
-        .split("%>").join("_out+='") +
-        "';return _out.replace(/[\\r\\n]\\s+[\\r\\n]/g, '\\r\\n');";
+        .split("%>").join("_out+='")
+        + "';return _out.replace(/[\\r\\n]\\s+[\\r\\n]/g, '\\r\\n');";
 
       return buffer;
     };
@@ -538,9 +538,9 @@
     };
 
     try {
-      var engine = cacheStore.get(tpl) ?
-        cacheStore.get(tpl) :
-        new this.template(this.options).parse(tpl, options);
+      var engine = cacheStore.get(tpl)
+        ? cacheStore.get(tpl)
+        : new this.template(this.options).parse(tpl, options);
 
       if (!options || options.cache !== false) {
         cacheStore.set(tpl, engine);

@@ -21,10 +21,10 @@
       for (var i = 0; i < length; i++) {
         data.list.push({
           index: i,
-          user: '<strong style="color:red">糖饼</strong>',
-          site: 'http://www.planeart.cn',
-          weibo: 'http://weibo.com/planeart',
-          QQweibo: 'http://t.qq.com/tangbin'
+          user: '<strong style="color:red">nuintun</strong>',
+          site: 'https://github.com/nuintun',
+          weibo: 'http://weibo.com/235679326',
+          QQweibo: 'http://t.qq.com/nuintun'
         });
       };
 
@@ -174,7 +174,6 @@
 
         tester(target);
       };
-
     </script>
     <!--portal 的模板 -->
     <script id="portal" type="text/tmpl">
@@ -184,7 +183,7 @@
             <%== @list[i].user %>/ 网站：
               <%== @list[i].site %>
           </li>
-        <% } %>
+          <% } %>
       </ul>
     </script>
     <!-- artTemplate 的模板 -->
@@ -195,7 +194,7 @@
             <%=# list[i].user %>/ 网站：
               <%=# list[i].site %>
           </li>
-        <% } %>
+          <% } %>
       </ul>
     </script>
     <!--juicer 的模板 -->
@@ -220,6 +219,6 @@
         <script>for (var i = 0; i < testList.length; i ++) {document.write(testList[i].name + '; ')}</script>
       </span>
     </p>
-    <div id="container" style="min-width: 400px; margin: 0 auto"></div>
+    <div id="container" style="min-width: 400px; margin: 0 auto;"></div>
   </body>
 </html>

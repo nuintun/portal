@@ -156,7 +156,6 @@
 
         tester(target);
       };
-
     </script>
     <!--portal 的模板 -->
     <script id="portal" type="text/tmpl">
@@ -166,7 +165,7 @@
             <%== @list[i].user %>/ 网站：
               <%== @list[i].site %>
           </li>
-        <% } %>
+          <% } %>
       </ul>
     </script>
     <!-- artTemplate 的模板 -->
@@ -177,7 +176,7 @@
             <%=# list[i].user %>/ 网站：
               <%=# list[i].site %>
           </li>
-        <% } %>
+          <% } %>
       </ul>
     </script>
     <!--juicer 的模板 -->
@@ -201,6 +200,6 @@
         <script>for (var i = 0; i < testList.length; i ++) {document.write(testList[i].name + '; ')}</script>
       </span>
     </p>
-    <div id="container" style="min-width: 400px; margin: 0 auto"></div>
+    <div id="container" style="min-width: 400px; margin: 0 auto;"></div>
   </body>
 </html>
