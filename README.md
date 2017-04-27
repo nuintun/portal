@@ -64,4 +64,4 @@ console.log(view.render({
 [MIT](LICENSE)
 
 [david-image]: http://img.shields.io/david/dev/nuintun/portal.svg?style=flat-square
-[david-url]: https://david-dm.org/nuintun/portal
+[david-url]: https://david-dm.org/nuintun/portal?type=dev
