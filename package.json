@@ -29,7 +29,7 @@
   "main": "dist/portal.js",
   "devDependencies": {
     "rollup": "^0.41.6",
-    "uglify-js": "^2.8.22",
+    "uglify-js": "^3.0.7",
     "benchmark": "^2.1.4"
   },
   "readmeFilename": "README.md"
