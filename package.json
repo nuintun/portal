@@ -1,7 +1,7 @@
 {
   "name": "portal",
   "version": "0.0.1",
-  "description": "A micro html template engine.",
+  "description": "A micro and fast html template engine.",
   "author": {
     "name": "nuintun",
     "email": "nuintun@qq.com"
@@ -29,7 +29,7 @@
   "main": "dist/portal.js",
   "devDependencies": {
     "rollup": "^0.43.0",
-    "uglify-js": "^3.0.19",
+    "uglify-js": "^3.0.20",
     "benchmark": "^2.1.4"
   },
   "readmeFilename": "README.md"

@@ -1,6 +1,6 @@
 # portal
 
->A micro html template engine
+>A micro and fast html template engine
 >
 >[![Dependencies][david-image]][david-url]
 
