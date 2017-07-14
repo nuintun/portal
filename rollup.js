@@ -1,6 +1,6 @@
 const fs = require('fs');
 const rollup = require('rollup');
-const uglify = require('uglify-js');
+const uglify = require('uglify-es');
 
 rollup.rollup({
   legacy: true,
@@ -23,32 +23,34 @@ rollup.rollup({
     fs.mkdirSync('dist');
   }
 
-  let result = bundle.generate({
+  bundle.generate({
     format: 'umd',
     indent: true,
     useStrict: true,
-    moduleId: 'portal',
+    amd: { id: 'portal' },
     moduleName: 'Portal'
+  }).then(function(result) {
+    fs.writeFileSync(src, result.code);
+    console.log(`  Build ${ src } success!`);
+
+    var source = {};
+
+    source[filename] = result.code;
+
+    result = uglify.minify(source, {
+      ecma: 5,
+      ie8: true,
+      mangle: { eval: true },
+      sourceMap: { url: map }
+    });
+
+    fs.writeFileSync(min, result.code);
+    console.log(`  Build ${ min } success!`);
+    fs.writeFileSync(src + '.map', result.map);
+    console.log(`  Build ${ src + '.map' } success!`);
+  }).catch(function(error) {
+    console.error(error);
   });
-
-  fs.writeFileSync(src, result.code);
-  console.log(`  Build ${ src } success!`);
-
-  var source = {};
-
-  source[filename] = result.code;
-
-  result = uglify.minify(source, {
-    compress: { ie8: true },
-    mangle: { ie8: true },
-    output: { ie8: true },
-    sourceMap: { url: map }
-  });
-
-  fs.writeFileSync(min, result.code);
-  console.log(`  Build ${ min } success!`);
-  fs.writeFileSync(src + '.map', result.map);
-  console.log(`  Build ${ src + '.map' } success!`);
 }).catch(function(error) {
   console.error(error);
 });
