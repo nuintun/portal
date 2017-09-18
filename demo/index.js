@@ -16,7 +16,7 @@ var view = `
       data-role="control"
       data-action-id="<%= index %>"
       <%= control.autofocus ? ' autofocus' : '' %>>
-      <%== :link(control.value) %>
+      <%== :link(control.title, control.value) %>
     </a>
     <% }); %>
   </div>
@@ -39,9 +39,12 @@ var view = `
   </button>
   <% }); %>
 </div>
-
 `
 
 var portal = new Portal();
+
+portal.addHelper('link', function(title, href) {
+  return '<a title="' + title + '" href="' + href + '">' + title + '</a>';
+});
 
 console.log(portal.compile(view).render.toString());

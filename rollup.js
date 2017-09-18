@@ -3,8 +3,7 @@ const rollup = require('rollup');
 const uglify = require('uglify-es');
 
 rollup.rollup({
-  legacy: true,
-  entry: 'src/portal.js',
+  input: 'src/portal.js',
 }).then(function(bundle) {
   let stat;
   const name = 'portal';
@@ -26,9 +25,9 @@ rollup.rollup({
   bundle.generate({
     format: 'umd',
     indent: true,
-    useStrict: true,
+    strict: true,
     amd: { id: 'portal' },
-    moduleName: 'Portal'
+    name: 'Portal'
   }).then(function(result) {
     fs.writeFileSync(src, result.code);
     console.log(`  Build ${ src } success!`);
