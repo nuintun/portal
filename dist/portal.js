@@ -187,7 +187,7 @@
      * @param {Function} fn
      * @returns {Portal}
      */
-    addHelper: function(name, fn) {
+    register: function(name, fn) {
       this.helpers[name] = fn;
 
       return this;
@@ -199,7 +199,7 @@
      * @param {String} name
      * @returns {Portal}
      */
-    removeHelper: function(name) {
+    unregister: function(name) {
       delete this.helpers[name];
 
       return this;
