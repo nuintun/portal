@@ -11,10 +11,10 @@
     * open: template open tag
     * close: template close tag
   * return: { register: Function, unregister: Function, compile: Function }
-    * register(name: String, helper: Function): add helper
+    * register(name: String, helper: Function): register helper
       * name: the name of helper
       * helper: helper method
-    * unregister(name: String): remove helper of the name
+    * unregister(name: String): unregister helper
       * name: the name of helper
     * compile(template: String): compile a template string
       * template: template string
