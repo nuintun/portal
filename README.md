@@ -57,6 +57,9 @@ console.log(view.render({
     { src: 'c.jpg', href: '/download/c.jpg' }
   ]
 }));
+
+// Unregister helper
+portal.unregister('link');
 ```
 
 ### License
