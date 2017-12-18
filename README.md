@@ -1,8 +1,8 @@
 # portal
 
->A micro and fast html template engine
+> A micro and fast html template engine
 >
->[![Dependencies][david-image]][david-url]
+> [![Dependencies][david-image]][david-url]
 
 ### API
 
@@ -18,10 +18,10 @@
       * name: the name of helper
     * compile(template: String): compile a template string
       * template: template string
-        * ```:``` call helper
-        * ```@``` read template data property
-        * ```=``` output html escape string
-        * ```==``` output origin string
+        * `:` call helper
+        * `@` read template data property
+        * `=` output html escape string
+        * `==` output origin string
       * return: { render: Function }
         * render(data: Object): render function
           * data: the template data
@@ -29,6 +29,7 @@
 ### Example
 
 template:
+
 ```html
 <% @items.forEach(function(item) { %>
   <img src="<%= item.src %>" alt="image" />
@@ -37,6 +38,7 @@ template:
 ```
 
 usage:
+
 ```js
 // Create a new instance
 var portal = new Portal();
@@ -50,13 +52,15 @@ portal.register('link', function(href, text) {
 var view = portal.compile(template);
 
 // Render view
-console.log(view.render({
-  items: [
-    { src: 'a.jpg', href: '/download/a.jpg' },
-    { src: 'b.jpg', href: '/download/b.jpg' },
-    { src: 'c.jpg', href: '/download/c.jpg' }
-  ]
-}));
+console.log(
+  view.render({
+    items: [
+      { src: 'a.jpg', href: '/download/a.jpg' },
+      { src: 'b.jpg', href: '/download/b.jpg' },
+      { src: 'c.jpg', href: '/download/c.jpg' }
+    ]
+  })
+);
 
 // Unregister helper
 portal.unregister('link');
