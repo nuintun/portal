@@ -1,3 +1,9 @@
+/**
+ * @module utils
+ * @license MIT
+ * @version 2017/12/18
+ */
+
 // HTML转义映射表
 var HTML_ESCAPE_MAP = {
   '&': '&amp;',
@@ -8,11 +14,10 @@ var HTML_ESCAPE_MAP = {
 };
 
 /**
- * HTML转义
- * 防止XSS攻击
- *
- * @export
- * @param {String} html
+ * @function escapeHTML
+ * @description HTML转义，防止XSS攻击
+ * @param {string} html
+ * @returns {string}
  */
 export function escapeHTML(html) {
   return String(html).replace(/[&<>\'\"]/g, function(char) {
@@ -24,10 +29,10 @@ export function escapeHTML(html) {
 var RE_REGEX_ESCAPE = /[\[\]\\.^|()*+$:?!-]/g;
 
 /**
- * 正则元字符转义
- *
- * @param regex
- * @returns {String}
+ * @function escapeRegex
+ * @description 正则元字符转义
+ * @param {string} regex
+ * @returns {string}
  */
 export function escapeRegex(regex) {
   return regex.replace(RE_REGEX_ESCAPE, '\\$&');

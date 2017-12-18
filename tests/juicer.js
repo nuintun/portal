@@ -21,11 +21,11 @@
 
     args.push(juicer.options);
 
-    if (args[0].match(/^\s*#([\w:\-\.]+)\s*$/igm)) {
-      args[0].replace(/^\s*#([\w:\-\.]+)\s*$/igm, function($, $id) {
+    if (args[0].match(/^\s*#([\w:\-\.]+)\s*$/gim)) {
+      args[0].replace(/^\s*#([\w:\-\.]+)\s*$/gim, function($, $id) {
         var _document = document;
         var elem = _document && _document.getElementById($id);
-        args[0] = elem ? (elem.value || elem.innerHTML) : $;
+        args[0] = elem ? elem.value || elem.innerHTML : $;
       });
     }
 
@@ -56,15 +56,15 @@
       return __escapehtml.escapehash[k];
     },
     escaping: function(str) {
-      return typeof(str) !== 'string' ? str : str.replace(/[&<>"']/igm, this.escapereplace);
+      return typeof str !== 'string' ? str : str.replace(/[&<>"']/gim, this.escapereplace);
     },
     detection: function(data) {
-      return typeof(data) === 'undefined' ? '' : data;
+      return typeof data === 'undefined' ? '' : data;
     }
   };
 
   var __throw = function(error) {
-    if (typeof(console) !== 'undefined') {
+    if (typeof console !== 'undefined') {
       if (console.warn) {
         console.warn(error);
         return;
@@ -76,7 +76,7 @@
       }
     }
 
-    throw (error);
+    throw error;
   };
 
   var __creator = function(o, proto) {
@@ -88,9 +88,7 @@
     }
 
     var empty = function() {};
-    var n = Object.create
-      ? Object.create(proto)
-      : new(empty.prototype = proto, empty);
+    var n = Object.create ? Object.create(proto) : new ((empty.prototype = proto), empty)();
 
     for (var i in o) {
       if (o.hasOwnProperty(i)) {
@@ -106,7 +104,7 @@
     var FN_ARG_SPLIT = /,/;
     var FN_ARG = /^\s*(_?)(\S+?)\1\s*$/;
     var FN_BODY = /^function[^{]+{([\s\S]*)}/m;
-    var STRIP_COMMENTS = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg;
+    var STRIP_COMMENTS = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/gm;
     var args = [],
       fnText,
       fnBody,
@@ -155,15 +153,19 @@
     strip: true,
     errorhandling: true,
     detection: true,
-    _method: __creator({
-      __escapehtml: __escapehtml,
-      __throw: __throw,
-      __juicer: juicer
-    }, {})
+    _method: __creator(
+      {
+        __escapehtml: __escapehtml,
+        __throw: __throw,
+        __juicer: juicer
+      },
+      {}
+    )
   };
 
   juicer.tagInit = function() {
-    var forstart = juicer.tags.operationOpen + 'each\\s*([^}]*?)\\s*as\\s*(\\w*?)\\s*(,\\s*\\w*?)?' + juicer.tags.operationClose;
+    var forstart =
+      juicer.tags.operationOpen + 'each\\s*([^}]*?)\\s*as\\s*(\\w*?)\\s*(,\\s*\\w*?)?' + juicer.tags.operationClose;
     var forend = juicer.tags.operationOpen + '\\/each' + juicer.tags.operationClose;
     var ifstart = juicer.tags.operationOpen + 'if\\s*([^}]*?)' + juicer.tags.operationClose;
     var ifend = juicer.tags.operationOpen + '\\/if' + juicer.tags.operationClose;
@@ -172,7 +174,10 @@
     var interpolate = juicer.tags.interpolateOpen + '([\\s\\S]+?)' + juicer.tags.interpolateClose;
     var noneencode = juicer.tags.noneencodeOpen + '([\\s\\S]+?)' + juicer.tags.noneencodeClose;
     var inlinecomment = juicer.tags.commentOpen + '[^}]*?' + juicer.tags.commentClose;
-    var rangestart = juicer.tags.operationOpen + 'each\\s*(\\w*?)\\s*in\\s*range\\(([^}]+?)\\s*,\\s*([^}]+?)\\)' + juicer.tags.operationClose;
+    var rangestart =
+      juicer.tags.operationOpen +
+      'each\\s*(\\w*?)\\s*in\\s*range\\(([^}]+?)\\s*,\\s*([^}]+?)\\)' +
+      juicer.tags.operationClose;
     var include = juicer.tags.operationOpen + 'include\\s*([^}]*?)\\s*,\\s*([^}]*?)' + juicer.tags.operationClose;
     var helperRegisterStart = juicer.tags.operationOpen + 'helper\\s*([^}]*?)\\s*' + juicer.tags.operationClose;
     var helperRegisterBody = '([\\s\\S]*?)';
@@ -204,7 +209,7 @@
     var that = this;
 
     var escapePattern = function(v) {
-      return v.replace(/[\$\(\)\[\]\+\^\{\}\?\*\|\.]/igm, function($) {
+      return v.replace(/[\$\(\)\[\]\+\^\{\}\?\*\|\.]/gim, function($) {
         return '\\' + $;
       });
     };
@@ -245,7 +250,7 @@
       return false;
     }
 
-    return _method[fname] = fn;
+    return (_method[fname] = fn);
   };
 
   // remove the registered function in the memory by the provided function name.
@@ -275,12 +280,17 @@
         _fn = '_method.' + _cluster.shift() + '.call({}, ' + [_name].concat(_cluster) + ')';
       }
 
-      return '<%= ' + (_escape ? '_method.__escapehtml.escaping' : '') + '('
-        + (!options || options.detection !== false ? '_method.__escapehtml.detection' : '') + '('
-        + _fn
-        + ')'
-        + ')'
-        + ' %>';
+      return (
+        '<%= ' +
+        (_escape ? '_method.__escapehtml.escaping' : '') +
+        '(' +
+        (!options || options.detection !== false ? '_method.__escapehtml.detection' : '') +
+        '(' +
+        _fn +
+        ')' +
+        ')' +
+        ' %>'
+      );
     };
 
     this.__removeShell = function(tpl, options) {
@@ -303,12 +313,28 @@
           var alias = alias || 'value',
             key = key && key.substr(1);
           var _iterate = 'i' + _counter++;
-          return '<% ~function() {'
-            + 'for(var ' + _iterate + ' in ' + _name + ') {'
-            + 'if(' + _name + '.hasOwnProperty(' + _iterate + ')) {'
-            + 'var ' + alias + '=' + _name + '[' + _iterate + '];'
-            + (key ? ('var ' + key + '=' + _iterate + ';') : '')
-            + ' %>';
+          return (
+            '<% ~function() {' +
+            'for(var ' +
+            _iterate +
+            ' in ' +
+            _name +
+            ') {' +
+            'if(' +
+            _name +
+            '.hasOwnProperty(' +
+            _iterate +
+            ')) {' +
+            'var ' +
+            alias +
+            '=' +
+            _name +
+            '[' +
+            _iterate +
+            '];' +
+            (key ? 'var ' + key + '=' + _iterate + ';' : '') +
+            ' %>'
+          );
         })
         .replace(juicer.settings.forend, '<% }}}(); %>')
 
@@ -344,16 +370,32 @@
         // range expression
         .replace(juicer.settings.rangestart, function($, _name, start, end) {
           var _iterate = 'j' + _counter++;
-          return '<% ~function() {'
-            + 'for(var ' + _iterate + '=' + start + ';' + _iterate + '<' + end + ';' + _iterate + '++) {{'
-            + 'var ' + _name + '=' + _iterate + ';'
-            + ' %>';
+          return (
+            '<% ~function() {' +
+            'for(var ' +
+            _iterate +
+            '=' +
+            start +
+            ';' +
+            _iterate +
+            '<' +
+            end +
+            ';' +
+            _iterate +
+            '++) {{' +
+            'var ' +
+            _name +
+            '=' +
+            _iterate +
+            ';' +
+            ' %>'
+          );
         })
 
         // include sub-template
         .replace(juicer.settings.include, function($, tpl, data) {
           // compatible for node.js
-          if (tpl.match(/^file\:\/\//igm)) return $;
+          if (tpl.match(/^file\:\/\//gim)) return $;
           return '<%= _method.__juicer(' + tpl + ', ' + data + '); %>';
         });
 
@@ -375,14 +417,59 @@
       var method = [];
       var prefix = '';
       var reserved = [
-                'if', 'each', '_', '_method', 'console',
-                'break', 'case', 'catch', 'continue', 'debugger', 'default', 'delete', 'do',
-                'finally', 'for', 'function', 'in', 'instanceof', 'new', 'return', 'switch',
-                'this', 'throw', 'try', 'typeof', 'var', 'void', 'while', 'with', 'null', 'typeof',
-                'class', 'enum', 'export', 'extends', 'import', 'super', 'implements', 'interface',
-                'let', 'package', 'private', 'protected', 'public', 'static', 'yield', 'const', 'arguments',
-                'true', 'false', 'undefined', 'NaN'
-            ];
+        'if',
+        'each',
+        '_',
+        '_method',
+        'console',
+        'break',
+        'case',
+        'catch',
+        'continue',
+        'debugger',
+        'default',
+        'delete',
+        'do',
+        'finally',
+        'for',
+        'function',
+        'in',
+        'instanceof',
+        'new',
+        'return',
+        'switch',
+        'this',
+        'throw',
+        'try',
+        'typeof',
+        'var',
+        'void',
+        'while',
+        'with',
+        'null',
+        'typeof',
+        'class',
+        'enum',
+        'export',
+        'extends',
+        'import',
+        'super',
+        'implements',
+        'interface',
+        'let',
+        'package',
+        'private',
+        'protected',
+        'public',
+        'static',
+        'yield',
+        'const',
+        'arguments',
+        'true',
+        'false',
+        'undefined',
+        'NaN'
+      ];
 
       var indexOf = function(array, item) {
         if (Array.prototype.indexOf && array.indexOf === Array.prototype.indexOf) {
@@ -397,33 +484,47 @@
       };
 
       var variableAnalyze = function($, statement) {
-        statement = statement.match(/\w+/igm)[0];
+        statement = statement.match(/\w+/gim)[0];
 
-        if (indexOf(buffer, statement) === -1 && indexOf(reserved, statement) === -1 && indexOf(method, statement) === -1) {
-
+        if (
+          indexOf(buffer, statement) === -1 &&
+          indexOf(reserved, statement) === -1 &&
+          indexOf(method, statement) === -1
+        ) {
           // avoid re-declare native function, if not do this, template
           // `{@if encodeURIComponent(name)}` could be throw undefined.
 
-          if (typeof(window) !== 'undefined' && typeof(window[statement]) === 'function' && window[statement].toString().match(/^\s*?function \w+\(\) \{\s*?\[native code\]\s*?\}\s*?$/i)) {
+          if (
+            typeof window !== 'undefined' &&
+            typeof window[statement] === 'function' &&
+            window[statement].toString().match(/^\s*?function \w+\(\) \{\s*?\[native code\]\s*?\}\s*?$/i)
+          ) {
             return $;
           }
 
           // compatible for node.js
-          if (typeof(global) !== 'undefined' && typeof(global[statement]) === 'function' && global[statement].toString().match(/^\s*?function \w+\(\) \{\s*?\[native code\]\s*?\}\s*?$/i)) {
+          if (
+            typeof global !== 'undefined' &&
+            typeof global[statement] === 'function' &&
+            global[statement].toString().match(/^\s*?function \w+\(\) \{\s*?\[native code\]\s*?\}\s*?$/i)
+          ) {
             return $;
           }
 
           // avoid re-declare registered function, if not do this, template
           // `{@if registered_func(name)}` could be throw undefined.
 
-          if (typeof(juicer.options._method[statement]) === 'function' || juicer.options._method.hasOwnProperty(statement)) {
+          if (
+            typeof juicer.options._method[statement] === 'function' ||
+            juicer.options._method.hasOwnProperty(statement)
+          ) {
             method.push(statement);
             return $;
           }
 
           // avoid SyntaxError: Unexpected number
 
-          if (statement.match(/^\d+/igm)) {
+          if (statement.match(/^\d+/gim)) {
             return $;
           }
 
@@ -433,12 +534,13 @@
         return $;
       };
 
-      tpl.replace(juicer.settings.forstart, variableAnalyze).
-      replace(juicer.settings.interpolate, variableAnalyze).
-      replace(juicer.settings.ifstart, variableAnalyze).
-      replace(juicer.settings.elseifstart, variableAnalyze).
-      replace(juicer.settings.include, variableAnalyze).
-      replace(/[\+\-\*\/%!\?\|\^&~<>=,\(\)\[\]]\s*([A-Za-z_0-9]+)/igm, variableAnalyze);
+      tpl
+        .replace(juicer.settings.forstart, variableAnalyze)
+        .replace(juicer.settings.interpolate, variableAnalyze)
+        .replace(juicer.settings.ifstart, variableAnalyze)
+        .replace(juicer.settings.elseifstart, variableAnalyze)
+        .replace(juicer.settings.include, variableAnalyze)
+        .replace(/[\+\-\*\/%!\?\|\^&~<>=,\(\)\[\]]\s*([A-Za-z_0-9]+)/gim, variableAnalyze);
 
       for (var i = 0; i < buffer.length; i++) {
         prefix += 'var ' + buffer[i] + '=_.' + buffer[i] + ';';
@@ -455,36 +557,44 @@
       var buffer = [].join('');
 
       buffer += "'use strict';"; // use strict mode
-      buffer += "var _=_||{};";
+      buffer += 'var _=_||{};';
       buffer += "var _out='';_out+='";
 
       if (strip !== false) {
-        buffer += tpl
-          .replace(/\\/g, "\\\\")
-          .replace(/[\r\t\n]/g, " ")
-          .replace(/'(?=[^%]*%>)/g, "\t")
-          .split("'").join("\\'")
-          .split("\t").join("'")
-          .replace(/<%=(.+?)%>/g, "';_out+=$1;_out+='")
-          .split("<%").join("';")
-          .split("%>").join("_out+='")
-          + "';return _out;";
+        buffer +=
+          tpl
+            .replace(/\\/g, '\\\\')
+            .replace(/[\r\t\n]/g, ' ')
+            .replace(/'(?=[^%]*%>)/g, '\t')
+            .split("'")
+            .join("\\'")
+            .split('\t')
+            .join("'")
+            .replace(/<%=(.+?)%>/g, "';_out+=$1;_out+='")
+            .split('<%')
+            .join("';")
+            .split('%>')
+            .join("_out+='") + "';return _out;";
 
         return buffer;
       }
 
-      buffer += tpl
-        .replace(/\\/g, "\\\\")
-        .replace(/[\r]/g, "\\r")
-        .replace(/[\t]/g, "\\t")
-        .replace(/[\n]/g, "\\n")
-        .replace(/'(?=[^%]*%>)/g, "\t")
-        .split("'").join("\\'")
-        .split("\t").join("'")
-        .replace(/<%=(.+?)%>/g, "';_out+=$1;_out+='")
-        .split("<%").join("';")
-        .split("%>").join("_out+='")
-        + "';return _out.replace(/[\\r\\n]\\s+[\\r\\n]/g, '\\r\\n');";
+      buffer +=
+        tpl
+          .replace(/\\/g, '\\\\')
+          .replace(/[\r]/g, '\\r')
+          .replace(/[\t]/g, '\\t')
+          .replace(/[\n]/g, '\\n')
+          .replace(/'(?=[^%]*%>)/g, '\t')
+          .split("'")
+          .join("\\'")
+          .split('\t')
+          .join("'")
+          .replace(/<%=(.+?)%>/g, "';_out+=$1;_out+='")
+          .split('<%')
+          .join("';")
+          .split('%>')
+          .join("_out+='") + "';return _out.replace(/[\\r\\n]\\s+[\\r\\n]/g, '\\r\\n');";
 
       return buffer;
     };
@@ -533,21 +643,18 @@
           return options.cachestore.set(tpl, val);
         }
 
-        return that.__cache[tpl] = val;
+        return (that.__cache[tpl] = val);
       }
     };
 
     try {
-      var engine = cacheStore.get(tpl)
-        ? cacheStore.get(tpl)
-        : new this.template(this.options).parse(tpl, options);
+      var engine = cacheStore.get(tpl) ? cacheStore.get(tpl) : new this.template(this.options).parse(tpl, options);
 
       if (!options || options.cache !== false) {
         cacheStore.set(tpl, engine);
       }
 
       return engine;
-
     } catch (e) {
       __throw('Juicer Compile Exception: ' + e.message);
 
@@ -566,13 +673,13 @@
   };
 
   // avoid memory leak for node.js
-  if (typeof(global) !== 'undefined' && typeof(window) === 'undefined') {
+  if (typeof global !== 'undefined' && typeof window === 'undefined') {
     juicer.set('cache', false);
   }
 
-  if (typeof(document) !== 'undefined' && document.body) {
+  if (typeof document !== 'undefined' && document.body) {
     juicer.documentHTML = document.body.innerHTML;
   }
 
-  typeof(module) !== 'undefined' && module.exports ? module.exports = juicer : this.juicer = juicer;
+  typeof module !== 'undefined' && module.exports ? (module.exports = juicer) : (this.juicer = juicer);
 })();

@@ -15,8 +15,8 @@
   var template = function(filename, content) {
     return typeof content === 'string'
       ? compile(content, {
-        filename: filename
-      })
+          filename: filename
+        })
       : renderFile(filename, content);
   };
 
@@ -32,16 +32,16 @@
     defaults[name] = value;
   };
 
-  var defaults = template.defaults = {
+  var defaults = (template.defaults = {
     openTag: '<%', // 逻辑语法开始标签
     closeTag: '%>', // 逻辑语法结束标签
     escape: true, // 是否编码输出变量的 HTML 字符
     cache: true, // 是否开启缓存（依赖 options 的 filename 字段）
     compress: false, // 是否压缩输出
     parser: null // 自定义语法格式器 @see: template-syntax.js
-  };
+  });
 
-  var cacheStore = template.cache = {};
+  var cacheStore = (template.cache = {});
 
   /**
    * 渲染模板
@@ -61,14 +61,16 @@
    * @param   {Object}    数据
    * @return  {String}    渲染好的字符串
    */
-  var renderFile = template.renderFile = function(filename, data) {
-    var fn = template.get(filename) || showDebugInfo({
-      filename: filename,
-      name: 'Render Error',
-      message: 'Template not found'
-    });
+  var renderFile = (template.renderFile = function(filename, data) {
+    var fn =
+      template.get(filename) ||
+      showDebugInfo({
+        filename: filename,
+        name: 'Render Error',
+        message: 'Template not found'
+      });
     return data ? fn(data) : fn;
-  };
+  });
 
   /**
    * 获取编译缓存（可由外部重写此方法）
@@ -76,7 +78,6 @@
    * @param   {Function}  编译好的函数
    */
   template.get = function(filename) {
-
     var cache;
 
     if (cacheStore[filename]) {
@@ -87,8 +88,7 @@
       var elem = document.getElementById(filename);
 
       if (elem) {
-        var source = (elem.value || elem.innerHTML)
-          .replace(/^\s*|\s*$/g, '');
+        var source = (elem.value || elem.innerHTML).replace(/^\s*|\s*$/g, '');
         cache = compile(source, {
           filename: filename
         });
@@ -99,9 +99,7 @@
   };
 
   var toString = function(value, type) {
-
     if (typeof value !== 'string') {
-
       type = typeof value;
       if (type === 'number') {
         value += '';
@@ -113,15 +111,14 @@
     }
 
     return value;
-
   };
 
   var escapeMap = {
-    "<": "&#60;",
-    ">": "&#62;",
-    '"': "&#34;",
-    "'": "&#39;",
-    "&": "&#38;"
+    '<': '&#60;',
+    '>': '&#62;',
+    '"': '&#34;',
+    "'": '&#39;',
+    '&': '&#38;'
   };
 
   var escapeFn = function(s) {
@@ -129,13 +126,14 @@
   };
 
   var escapeHTML = function(content) {
-    return toString(content)
-      .replace(/&(?![\w#]+;)|[<>"']/g, escapeFn);
+    return toString(content).replace(/&(?![\w#]+;)|[<>"']/g, escapeFn);
   };
 
-  var isArray = Array.isArray || function(obj) {
-    return ({}).toString.call(obj) === '[object Array]';
-  };
+  var isArray =
+    Array.isArray ||
+    function(obj) {
+      return {}.toString.call(obj) === '[object Array]';
+    };
 
   var each = function(data, callback) {
     var i, len;
@@ -150,8 +148,7 @@
     }
   };
 
-  var utils = template.utils = {
-
+  var utils = (template.utils = {
     $helpers: {},
 
     $include: renderFile,
@@ -161,8 +158,7 @@
     $escape: escapeHTML,
 
     $each: each
-
-  };
+  });
   /**
    * 添加模板辅助方法
    * @name    template.helper
@@ -173,7 +169,7 @@
     helpers[name] = helper;
   };
 
-  var helpers = template.helpers = utils.$helpers;
+  var helpers = (template.helpers = utils.$helpers);
 
   /**
    * 模板错误事件（可由外部重写此方法）
@@ -193,7 +189,6 @@
 
   // 模板调试器
   var showDebugInfo = function(e) {
-
     template.onerror(e);
 
     return function() {
@@ -219,8 +214,7 @@
    *
    * @return  {Function}  渲染方法
    */
-  var compile = template.compile = function(source, options) {
-
+  var compile = (template.compile = function(source, options) {
     // 合并默认配置
     options = options || {};
     for (var name in defaults) {
@@ -232,28 +226,20 @@
     var filename = options.filename;
 
     try {
-
       var Render = compiler(source, options);
-
     } catch (e) {
-
       e.filename = filename || 'anonymous';
       e.name = 'Syntax Error';
 
       return showDebugInfo(e);
-
     }
 
     // 对编译结果进行一次包装
 
     function render(data) {
-
       try {
-
         return new Render(data, filename) + '';
-
       } catch (e) {
-
         // 运行时出错后自动开启调试模式重新编译
         if (!options.debug) {
           options.debug = true;
@@ -261,9 +247,7 @@
         }
 
         return showDebugInfo(e)();
-
       }
-
     }
 
     render.prototype = Render.prototype;
@@ -276,8 +260,7 @@
     }
 
     return render;
-
-  };
+  });
 
   // 数组迭代
   var forEach = utils.$each;
@@ -285,24 +268,21 @@
   // 静态分析模板变量
   var KEYWORDS =
     // 关键字
-    'break,case,catch,continue,debugger,default,delete,do,else,false'
-    + ',finally,for,function,if,in,instanceof,new,null,return,switch,this'
-    + ',throw,true,try,typeof,var,void,while,with'
-
+    'break,case,catch,continue,debugger,default,delete,do,else,false' +
+    ',finally,for,function,if,in,instanceof,new,null,return,switch,this' +
+    ',throw,true,try,typeof,var,void,while,with' +
     // 保留字
-    + ',abstract,boolean,byte,char,class,const,double,enum,export,extends'
-    + ',final,float,goto,implements,import,int,interface,long,native'
-    + ',package,private,protected,public,short,static,super,synchronized'
-    + ',throws,transient,volatile'
-
+    ',abstract,boolean,byte,char,class,const,double,enum,export,extends' +
+    ',final,float,goto,implements,import,int,interface,long,native' +
+    ',package,private,protected,public,short,static,super,synchronized' +
+    ',throws,transient,volatile' +
     // ECMA 5 - use strict
-    + ',arguments,let,yield'
-
-    + ',undefined';
+    ',arguments,let,yield' +
+    ',undefined';
 
   var REMOVE_RE = /\/\*[\w\W]*?\*\/|\/\/[^\n]*\n|\/\/[^\n]*$|"(?:[^"\\]|\\[\w\W])*"|'(?:[^'\\]|\\[\w\W])*'|\s*\.\s*[$\w\.]+/g;
   var SPLIT_RE = /[^\w$]+/g;
-  var KEYWORDS_RE = new RegExp(["\\b" + KEYWORDS.replace(/,/g, '\\b|\\b') + "\\b"].join('|'), 'g');
+  var KEYWORDS_RE = new RegExp(['\\b' + KEYWORDS.replace(/,/g, '\\b|\\b') + '\\b'].join('|'), 'g');
   var NUMBER_RE = /^\d[^,]*|,\d[^,]*/g;
   var BOUNDARY_RE = /^,+|,+$/g;
   var SPLIT2_RE = /^$|,+/;
@@ -316,20 +296,23 @@
       .replace(NUMBER_RE, '')
       .replace(BOUNDARY_RE, '')
       .split(SPLIT2_RE);
-  };
+  }
 
   // 字符串转义
   function stringify(code) {
-    return "'" + code
-      // 单引号与反斜杠转义
-      .replace(/('|\\)/g, '\\$1')
-      // 换行符转义(windows + linux)
-      .replace(/\r/g, '\\r')
-      .replace(/\n/g, '\\n') + "'";
+    return (
+      "'" +
+      code
+        // 单引号与反斜杠转义
+        .replace(/('|\\)/g, '\\$1')
+        // 换行符转义(windows + linux)
+        .replace(/\r/g, '\\r')
+        .replace(/\n/g, '\\n') +
+      "'"
+    );
   }
 
   function compiler(source, options) {
-
     var debug = options.debug;
     var openTag = options.openTag;
     var closeTag = options.closeTag;
@@ -341,30 +324,26 @@
     var uniq = { $data: 1, $filename: 1, $utils: 1, $helpers: 1, $out: 1, $line: 1 };
 
     var isNewEngine = ''.trim; // '__proto__' in {}
-    var replaces = isNewEngine ? ["$out='';", "$out+=", ";", "$out"] : ["$out=[];", "$out.push(", ");", "$out.join('')"];
+    var replaces = isNewEngine
+      ? ["$out='';", '$out+=', ';', '$out']
+      : ['$out=[];', '$out.push(', ');', "$out.join('')"];
 
-    var concat = isNewEngine
-      ? "$out+=text;return $out;"
-      : "$out.push(text);";
+    var concat = isNewEngine ? '$out+=text;return $out;' : '$out.push(text);';
 
-    var print = "function(){"
-      + "var text=''.concat.apply('',arguments);"
-      + concat
-      + "}";
+    var print = 'function(){' + "var text=''.concat.apply('',arguments);" + concat + '}';
 
-    var include = "function(filename,data){"
-      + "data=data||$data;"
-      + "var text=$utils.$include(filename,data,$filename);"
-      + concat
-      + "}";
+    var include =
+      'function(filename,data){' +
+      'data=data||$data;' +
+      'var text=$utils.$include(filename,data,$filename);' +
+      concat +
+      '}';
 
-    var headerCode = "'use strict';"
-      + "var $utils=this,$helpers=$utils.$helpers,"
-      + (debug ? "$line=0," : "");
+    var headerCode = "'use strict';" + 'var $utils=this,$helpers=$utils.$helpers,' + (debug ? '$line=0,' : '');
 
     var mainCode = replaces[0];
 
-    var footerCode = "return new String(" + replaces[3] + ");"
+    var footerCode = 'return new String(' + replaces[3] + ');';
 
     // html与逻辑语法分离
     forEach(source.split(openTag), function(code) {
@@ -375,64 +354,60 @@
 
       // code: [html]
       if (code.length === 1) {
-
         mainCode += html($0);
 
         // code: [logic, html]
       } else {
-
         mainCode += logic($0);
 
         if ($1) {
           mainCode += html($1);
         }
       }
-
     });
 
     var code = headerCode + mainCode + footerCode;
 
     // 调试语句
     if (debug) {
-      code = "try{" + code + "}catch(e){"
-        + "throw {"
-        + "filename:$filename,"
-        + "name:'Render Error',"
-        + "message:e.message,"
-        + "line:$line,"
-        + "source:" + stringify(source)
-        + ".split(/\\n/)[$line-1].replace(/^\\s+/,'')"
-        + "};"
-        + "}";
+      code =
+        'try{' +
+        code +
+        '}catch(e){' +
+        'throw {' +
+        'filename:$filename,' +
+        "name:'Render Error'," +
+        'message:e.message,' +
+        'line:$line,' +
+        'source:' +
+        stringify(source) +
+        ".split(/\\n/)[$line-1].replace(/^\\s+/,'')" +
+        '};' +
+        '}';
     }
 
     try {
-
-      var Render = new Function("$data", "$filename", code);
+      var Render = new Function('$data', '$filename', code);
       Render.prototype = utils;
 
       return Render;
-
     } catch (e) {
-      e.temp = "function anonymous($data,$filename) {" + code + "}";
+      e.temp = 'function anonymous($data,$filename) {' + code + '}';
       throw e;
     }
 
     // 处理 HTML 语句
     function html(code) {
-
       // 记录行号
       line += code.split(/\n/).length - 1;
 
       // 压缩多余空白与注释
       if (compress) {
-        code = code
-          .replace(/\s+/g, ' ')
-          .replace(/<!--[\w\W]*?-->/g, '');
+        code = code.replace(/\s+/g, ' ').replace(/<!--[\w\W]*?-->/g, '');
       }
 
       if (code) {
-        code = replaces[1] + stringify(code) + replaces[2] + "\n";
+        code = replaces[1] + stringify(code) + replaces[2] + '\n';
       }
 
       return code;
@@ -440,59 +415,50 @@
 
     // 处理逻辑语句
     function logic(code) {
-
       var thisLine = line;
 
       if (parser) {
-
         // 语法转换插件钩子
         code = parser(code, options);
-
       } else if (debug) {
-
         // 记录行号
         code = code.replace(/\n/g, function() {
           line++;
-          return "$line=" + line + ";";
+          return '$line=' + line + ';';
         });
-
       }
 
       // 输出语句. 编码: <%=value%> 不编码:<%=#value%>
       // <%=#value%> 等同 v2.0.3 之前的 <%==value%>
       if (code.indexOf('=') === 0) {
-
         var escapeSyntax = escape && !/^=[=#]/.test(code);
 
         code = code.replace(/^=[=#]?|[\s;]*$/g, '');
 
         // 对内容编码
         if (escapeSyntax) {
-
           var name = code.replace(/\s*\([^\)]+\)/, '');
 
           // 排除 utils.* | include | print
 
           if (!utils[name] && !/^(include|print)$/.test(name)) {
-            code = "$escape(" + code + ")";
+            code = '$escape(' + code + ')';
           }
 
           // 不编码
         } else {
-          code = "$string(" + code + ")";
+          code = '$string(' + code + ')';
         }
 
         code = replaces[1] + code + replaces[2];
-
       }
 
       if (debug) {
-        code = "$line=" + thisLine + ";" + code;
+        code = '$line=' + thisLine + ';' + code;
       }
 
       // 提取模板中的变量名
       forEach(getVariable(code), function(name) {
-
         // name 值可能为空，在安卓低版本浏览器下
         if (!name || uniq[name]) {
           return;
@@ -504,35 +470,24 @@
         // 赋值优先级:
         // [include, print] > utils > helpers > data
         if (name === 'print') {
-
           value = print;
-
         } else if (name === 'include') {
-
           value = include;
-
         } else if (utils[name]) {
-
-          value = "$utils." + name;
-
+          value = '$utils.' + name;
         } else if (helpers[name]) {
-
-          value = "$helpers." + name;
-
+          value = '$helpers.' + name;
         } else {
-
-          value = "$data." + name;
+          value = '$data.' + name;
         }
 
-        headerCode += name + "=" + value + ",";
+        headerCode += name + '=' + value + ',';
         uniq[name] = true;
-
       });
 
-      return code + "\n";
+      return code + '\n';
     }
-
-  };
+  }
 
   // RequireJS && SeaJS
   if (typeof define === 'function') {

@@ -1,8 +1,8 @@
 const Benchmark = require('benchmark');
 const Portal = require('../dist/portal');
-const artTemplate = require('./art-template')
+const artTemplate = require('./art-template');
 
-const suite = new Benchmark.Suite;
+const suite = new Benchmark.Suite();
 
 const prt = `
 <% for (var i = 0, l = @list.length; i < l; i ++) { %>
@@ -28,7 +28,7 @@ for (var i = 0; i < 100; i++) {
     weibo: 'http://weibo.com/235679326',
     QQweibo: 'http://t.qq.com/nuintun'
   });
-};
+}
 
 var prtRender = new Portal().compile(prt).render;
 var artRender = artTemplate.compile(art, { debug: true, cache: false });
@@ -46,6 +46,12 @@ suite
     console.log(String(event.target));
   })
   .on('complete', function() {
-    console.log('  Fastest is ' + this.filter('fastest').map('name').toString().replace(/:.*/, ''));
+    console.log(
+      '  Fastest is ' +
+        this.filter('fastest')
+          .map('name')
+          .toString()
+          .replace(/:.*/, '')
+    );
   })
   .run();

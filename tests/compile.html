@@ -16,7 +16,7 @@
       var testList = [
         {
           name: 'Portal',
-          tester: function() {
+          tester: function () {
             var source = document.getElementById('portal').innerHTML;
 
             for (var i = 0; i < number; i++) {
@@ -26,7 +26,7 @@
         },
         {
           name: 'artTemplate',
-          tester: function() {
+          tester: function () {
             var source = document.getElementById('template').innerHTML;
 
             for (var i = 0; i < number; i++) {
@@ -36,7 +36,7 @@
         },
         {
           name: 'juicer',
-          tester: function() {
+          tester: function () {
             juicer.set({
               errorhandling: true,
               cache: false
@@ -51,12 +51,12 @@
         }
       ];
 
-      var startTest = function() {
-        var Timer = function() {
+      var startTest = function () {
+        var Timer = function () {
           this.startTime = +new Date;
         };
 
-        Timer.prototype.stop = function() {
+        Timer.prototype.stop = function () {
           return +new Date - this.startTime;
         };
 
@@ -99,7 +99,7 @@
             enabled: false
           },
           tooltip: {
-            formatter: function() {
+            formatter: function () {
               return '<b>' + this.x + '</b><br/>' + this.y + '毫秒';
             }
           },
@@ -110,7 +110,7 @@
             bar: {
               dataLabels: {
                 enabled: true,
-                formatter: function() {
+                formatter: function () {
                   return this.y + 'ms';
                 }
               }
@@ -121,11 +121,11 @@
           }]
         });
 
-        var log = function(message) {
+        var log = function (message) {
           document.getElementById('log').innerHTML = message;
         };
 
-        var tester = function(target) {
+        var tester = function (target) {
           var time = new Timer;
 
           target.tester();
@@ -145,7 +145,7 @@
 
           log('正在测试: ' + target.name + '..');
 
-          setTimeout(function() {
+          setTimeout(function () {
             tester(target);
           }, 500);
         };
@@ -159,45 +159,49 @@
     </script>
     <!--portal 的模板 -->
     <script id="portal" type="text/tmpl">
-      <ul>
-        <% for (var i = 0, l = @list.length; i < l; i ++) { %>
-          <li>用户:
-            <%== @list[i].user %>/ 网站：
-              <%== @list[i].site %>
-          </li>
-          <% } %>
-      </ul>
-    </script>
+        <ul>
+          <% for (var i = 0, l = @list.length; i < l; i ++) { %>
+            <li>用户:
+              <%== @list[i].user %>/ 网站：
+                <%== @list[i].site %>
+            </li>
+            <% } %>
+        </ul>
+      </script>
     <!-- artTemplate 的模板 -->
     <script id="template" type="text/tmpl">
-      <ul>
-        <% for (var i = 0, l = list.length; i < l; i ++) { %>
-          <li>用户:
-            <%=# list[i].user %>/ 网站：
-              <%=# list[i].site %>
-          </li>
-          <% } %>
-      </ul>
-    </script>
+        <ul>
+          <% for (var i = 0, l = list.length; i < l; i ++) { %>
+            <li>用户:
+              <%=# list[i].user %>/ 网站：
+                <%=# list[i].site %>
+            </li>
+            <% } %>
+        </ul>
+      </script>
     <!--juicer 的模板 -->
     <script id="juicer" type="text/tmpl">
-      <ul>
-        {@each list as val}
-        <li>用户: $${val.user}/ 网站：$${val.site}</li>
-        {@/each}
-      </ul>
-    </script>
+        <ul>
+          {@each list as val}
+          <li>用户: $${val.user}/ 网站：$${val.site}</li>
+          {@/each}
+        </ul>
+      </script>
   </head>
   <body>
     <h1>引擎编译速度测试</h1>
     <p>
-      <strong><script>document.write(number);</script></strong> 次编译测试 [cache:false, debug:true]
+      <strong>
+        <script>document.write(number);</script>
+      </strong> 次编译测试 [cache:false, debug:true]
     </p>
-    <p><em>建议在拥有 v8 javascript 引擎的 chrome 浏览器上进行测试，避免浏览器停止响应！</em></p>
+    <p>
+      <em>建议在拥有 v8 javascript 引擎的 chrome 浏览器上进行测试，避免浏览器停止响应！</em>
+    </p>
     <p>
       <button id="button-test" onclick="this.disabled=true;startTest();" style="padding: 5px;">开始测试&raquo;</button>
       <span id="log" style="font-size:12px">
-        <script>for (var i = 0; i < testList.length; i ++) {document.write(testList[i].name + '; ')}</script>
+        <script>for (var i = 0; i < testList.length; i++) { document.write(testList[i].name + '; ') }</script>
       </span>
     </p>
     <div id="container" style="min-width: 400px; margin: 0 auto;"></div>

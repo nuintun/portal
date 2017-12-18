@@ -39,7 +39,7 @@ var view = `
   </button>
   <% }); %>
 </div>
-`
+`;
 
 var portal = new Portal();
 
