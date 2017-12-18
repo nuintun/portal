@@ -43,7 +43,7 @@ var view = `
 
 var portal = new Portal();
 
-portal.addHelper('link', function(title, href) {
+portal.register('link', function(title, href) {
   return '<a title="' + title + '" href="' + href + '">' + title + '</a>';
 });
 
