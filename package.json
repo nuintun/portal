@@ -20,8 +20,8 @@
   "jsnext:main": "src/portal.js",
   "main": "dist/portal.js",
   "devDependencies": {
-    "rollup": "^0.52.2",
-    "uglify-es": "^3.2.2",
+    "rollup": "^0.53.0",
+    "uglify-es": "^3.3.2",
     "benchmark": "^2.1.4"
   },
   "readmeFilename": "README.md"
