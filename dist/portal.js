@@ -80,6 +80,20 @@
   // 动态变量输出正则
   var RE_DYNAMIC_VARIABLE = /(^|[^\w\u00c0-\uFFFF_])@(?=\[)/g;
 
+  // 变量随机标识
+  var UID = (+new Date()).toString(32).toUpperCase() + '_';
+
+  // 渲染函数行数变量名
+  var VAR_LINE = '_LINE_' + UID;
+  // 渲染函数数据变量名
+  var VAR_DATA = '_DATA_' + UID;
+  // 渲染函数输出变量名
+  var VAR_OUTPUT = '_OUTPUT_' + UID;
+  // 转义HTML，防止XSS攻击
+  var VAR_ESCAPE = '_ESCAPE_' + UID;
+  // 渲染函数辅助函数变量名
+  var VAR_HELPERS = '_HELPERS_' + UID;
+
   /**
    * @class Portal
    * @constructor
@@ -126,68 +140,48 @@
       var row = 1;
       // 实例指针
       var context = this;
-      // 变量随机标识
-      var uid = +new Date();
-      // 渲染函数行数变量名
-      var line = '__LINE' + uid;
-      // 渲染函数数据变量名
-      var data = '__DATA' + uid;
-      // 渲染函数输出变量名
-      var output = '__OUTPUT' + uid;
-      // 转义HTML，防止XSS攻击
-      var escape = '__ESCAPE' + uid;
-      // 渲染函数辅助函数变量名
-      var helpers = '__HELPERS' + uid;
 
       // 解析模板
-      var code =
-        "'use strict';\n\n" +
-        'var ' +
-        line +
-        ' = 1;\n' +
-        'var ' +
-        output +
-        " = '';\n\n" +
+      // prettier-ignore
+      var code = "'use strict';\n\n"
+        + 'var ' + VAR_LINE + ' = 1;\n'
+        + 'var ' + VAR_OUTPUT + " = '';\n\n"
         // 入口
-        'try {\n  ' +
+        + 'try {\n  '
         // 模板拼接
-        output +
-        " += '" +
+        + VAR_OUTPUT + " += '"
+        // 模板字符串化
+        + String(view)
         // 左分界符
-        String(view)
-          .replace(context['<open>'], '\x11')
-          // 右分界符
-          .replace(context['<close>'], '\x13')
-          // 单引号转义
-          .replace(RE_ESCAPE_QUOTE, '\\x27')
-          // 空格去除过滤
-          .replace(RE_TRIM_SPACE, '')
-          // 拆行
-          .replace(RE_LINE_SPLIT, function() {
-            return "';\n  " + line + ' = ' + ++row + ';\n  ' + output + " += '\\n";
-          })
-          // 非转义输出
-          .replace(RE_ORIGIN_OUTPUT, "' + ($1) + '")
-          // 转义输出
-          .replace(RE_ESCAPE_OUTPUT, "' + " + escape + "($1) + '")
-          // 静态辅助方法调用逻辑处理
-          .replace(RE_STATIC_HELPER, '$1' + helpers + '.')
-          // 动态辅助方法调用逻辑处理
-          .replace(RE_DYNAMIC_HELPER, '$1' + helpers)
-          // 静态属性读取逻辑处理
-          .replace(RE_STATIC_VARIABLE, '$1' + data + '.')
-          // 动态属性读取逻辑处理
-          .replace(RE_DYNAMIC_VARIABLE, '$1' + data)
-          // 抽取模板逻辑
-          .replace(RE_COMPILER_LOGIC, "';\n  $1\n  " + output + " += '") +
+        .replace(context['<open>'], '\x11')
+        // 右分界符
+        .replace(context['<close>'], '\x13')
+        // 单引号转义
+        .replace(RE_ESCAPE_QUOTE, '\\x27')
+        // 空格去除过滤
+        .replace(RE_TRIM_SPACE, '')
+        // 拆行
+        .replace(RE_LINE_SPLIT, function() {
+          return "';\n  " + VAR_LINE + ' = ' + ++row + ';\n  ' + VAR_OUTPUT + " += '\\n";
+        })
+        // 非转义输出
+        .replace(RE_ORIGIN_OUTPUT, "' + ($1) + '")
+        // 转义输出
+        .replace(RE_ESCAPE_OUTPUT, "' + " + VAR_ESCAPE + "($1) + '")
+        // 静态辅助方法调用逻辑处理
+        .replace(RE_STATIC_HELPER, '$1' + VAR_HELPERS + '.')
+        // 动态辅助方法调用逻辑处理
+        .replace(RE_DYNAMIC_HELPER, '$1' + VAR_HELPERS)
+        // 静态属性读取逻辑处理
+        .replace(RE_STATIC_VARIABLE, '$1' + VAR_DATA + '.')
+        // 动态属性读取逻辑处理
+        .replace(RE_DYNAMIC_VARIABLE, '$1' + VAR_DATA)
+        // 抽取模板逻辑
+        .replace(RE_COMPILER_LOGIC, "';\n  $1\n  " + VAR_OUTPUT + " += '")
         // 输出结果
-        "';\n\n  return " +
-        output +
-        ';\n' +
+        + "';\n\n  return " + VAR_OUTPUT + ';\n' +
         // 异常捕获
-        "} catch (e) {\n  throw 'TemplateError: ' + e + ' (at line ' + " +
-        line +
-        " + ')';\n}";
+        "} catch (e) {\n  throw 'TemplateError: ' + e + ' (at line ' + " + VAR_LINE + " + ')';\n}";
 
       /**
        * @function compiler
@@ -197,10 +191,10 @@
        * @description 模板渲染引擎
        */
       var compiler = new Function(
-        data,
-        escape,
-        helpers,
-        code.replace(new RegExp('\x20*' + escapeRegex(output + " += '';") + '\n', 'g'), '')
+        VAR_DATA,
+        VAR_ESCAPE,
+        VAR_HELPERS,
+        code.replace(new RegExp('\x20*' + escapeRegex(VAR_OUTPUT + " += '';") + '\n', 'g'), '')
       );
 
       /**

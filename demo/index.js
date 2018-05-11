@@ -1,4 +1,12 @@
-var view = `
+/**
+ * @module utils
+ * @license MIT
+ * @version 2017/12/18
+ */
+
+const Portal = require('../dist/portal');
+
+const view = `
 <!-- 弹窗标题栏 -->
 <div class="ui-dialog-header">
   <!-- 弹窗标题 -->
@@ -41,7 +49,7 @@ var view = `
 </div>
 `;
 
-var portal = new Portal();
+const portal = new Portal();
 
 portal.register('link', function(title, href) {
   return '<a title="' + title + '" href="' + href + '">' + title + '</a>';
