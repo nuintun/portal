@@ -68,9 +68,9 @@ portal.unregister('link');
 
 ### Benchmark
 
-> [compile](https://nuintun.github.io/fetch/tests/compile.html)
+> [compile](https://nuintun.github.io/portal/tests/compile.html)
 >
-> [speed](https://nuintun.github.io/fetch/tests/speed.html)
+> [speed](https://nuintun.github.io/portal/tests/speed.html)
 
 ### License
 
