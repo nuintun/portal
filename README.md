@@ -66,6 +66,12 @@ console.log(
 portal.unregister('link');
 ```
 
+### Benchmark
+
+> [compile](https://nuintun.github.io/fetch/tests/compile.html)
+>
+> [speed](https://nuintun.github.io/fetch/tests/speed.html)
+
 ### License
 
 [MIT](LICENSE)
