@@ -16,15 +16,7 @@
     "email": "nuintun@qq.com"
   },
   "license": "MIT",
-  "keywords": [
-    "html",
-    "tmpl",
-    "render",
-    "engine",
-    "portal",
-    "compile",
-    "template"
-  ],
+  "keywords": ["html", "tmpl", "render", "engine", "portal", "compile", "template"],
   "jsnext:main": "src/portal.js",
   "main": "dist/portal.js",
   "devDependencies": {
