@@ -15,28 +15,38 @@
        * @license MIT
        * @version 2018/05/12
        */
-      const template = `
-      <% @items.forEach(function(item, index) { %>
-        <img src="<%= item.src %>" alt="image" />
-        <%== :link(item.href, 'download-' + index) %>
-      <% }) %>
-      `;
+      var template =
+        '<% @items.forEach(function(item, index) { %>' +
+        '<img src="<%= item.src %>" alt="image" />\n' +
+        '<%== :link(item.href, "download-" + index) %>\n' +
+        '<% }) %>';
 
       // Create a new instance
-      const portal = new Portal({ debug: false });
+      var portal = new Portal({ debug: false });
 
       // Register helper
       portal.register('link', (href, text) => {
-        return `<a href="${href}" title="${text}">${text}</a>`;
+        return '<a href="' + href + '" title="' + text + '">' + text + '</a>';
       });
 
       // Compile template string
-      const view = portal.compile(template);
+      var view = portal.compile(template);
 
-      console.log(view.render.toString());
+      console.log('template:\n\n' + template);
+      console.log('render:\n\n' + view.render.toString());
+
+      var data = {
+        items: [
+          { src: 'a.jpg', href: '/download/a.jpg' },
+          { src: 'b.jpg', href: '/download/b.jpg' },
+          { src: 'c.jpg', href: '/download/c.jpg' }
+        ]
+      };
+
+      console.log('data: ', data);
 
       // Render view
-      const html = view.render({
+      var html = view.render({
         items: [
           { src: 'a.jpg', href: '/download/a.jpg' },
           { src: 'b.jpg', href: '/download/b.jpg' },
@@ -44,7 +54,7 @@
         ]
       });
 
-      html && console.log(html);
+      html && console.log('result:\n\n' + html);
 
       // Unregister helper
       portal.unregister('link');
