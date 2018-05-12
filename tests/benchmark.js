@@ -30,7 +30,7 @@ for (var i = 0; i < 100; i++) {
   });
 }
 
-var prtRender = new Portal().compile(prt).render;
+var prtRender = new Portal({ debug: true }).compile(prt).render;
 var artRender = artTemplate.compile(art, { debug: true, cache: false });
 
 // add tests

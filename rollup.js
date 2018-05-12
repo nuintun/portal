@@ -4,10 +4,45 @@
  * @version 2017/12/18
  */
 
-const fs = require('fs');
+'use strict';
+
+const path = require('path');
+const fs = require('fs-extra');
 const rollup = require('rollup');
 const uglify = require('uglify-es');
 const pkg = require('./package.json');
+const typescript = require('rollup-plugin-typescript2');
+
+/**
+ * @function build
+ * @param {Object} inputOptions
+ * @param {Object} outputOptions
+ */
+async function build(inputOptions, outputOptions) {
+  await fs.remove('dist');
+
+  const bundle = await rollup.rollup(inputOptions);
+
+  await bundle.write(outputOptions);
+
+  const file = outputOptions.file;
+
+  console.log(`Build ${file} success!`);
+
+  const min = file.replace(/\.js$/i, '.min.js');
+  const map = `${file}.map`;
+
+  const minify = uglify.minify(
+    { 'portal.js': (await fs.readFile(path.resolve(file))).toString() },
+    { ecma: 5, ie8: true, mangle: { eval: true }, sourceMap: { url: path.basename(map) } }
+  );
+
+  await fs.outputFile(min, outputOptions.banner + minify.code);
+  console.log(`Build ${min} success!`);
+
+  await fs.outputFile(map, minify.map);
+  console.log(`Build ${map} success!`);
+}
 
 const banner = `/**
  * @module ${pkg.name}
@@ -19,61 +54,21 @@ const banner = `/**
  */
 `;
 
-rollup
-  .rollup({
-    input: 'src/portal.js'
-  })
-  .then(function(bundle) {
-    let stat;
-    const name = 'portal';
-    const filename = name + '.js';
-    const map = filename + '.map';
-    const src = 'dist/' + filename;
-    const min = 'dist/' + name + '.min.js';
+const inputOptions = {
+  input: 'src/portal.ts',
+  context: 'window',
+  plugins: [typescript()]
+};
 
-    try {
-      stat = fs.statSync('dist');
-    } catch (e) {
-      // No such file or directory
-    }
+const outputOptions = {
+  format: 'umd',
+  indent: true,
+  strict: true,
+  legacy: true,
+  banner: banner,
+  amd: { id: 'portal' },
+  name: 'Portal',
+  file: 'dist/portal.js'
+};
 
-    if (!stat) {
-      fs.mkdirSync('dist');
-    }
-
-    bundle
-      .generate({
-        format: 'umd',
-        indent: true,
-        strict: true,
-        banner: banner,
-        amd: { id: 'portal' },
-        name: 'Portal'
-      })
-      .then(function(result) {
-        fs.writeFileSync(src, result.code);
-        console.log(`  Build ${src} success!`);
-
-        var source = {};
-
-        source[filename] = result.code;
-
-        result = uglify.minify(source, {
-          ecma: 5,
-          ie8: true,
-          mangle: { eval: true },
-          sourceMap: { url: map }
-        });
-
-        fs.writeFileSync(min, banner + result.code);
-        console.log(`  Build ${min} success!`);
-        fs.writeFileSync(src + '.map', result.map);
-        console.log(`  Build ${src + '.map'} success!`);
-      })
-      .catch(function(error) {
-        console.error(error);
-      });
-  })
-  .catch(function(error) {
-    console.error(error);
-  });
+build(inputOptions, outputOptions);

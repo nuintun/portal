@@ -7,16 +7,18 @@
 ### API
 
 * new Portal(options: Object)
-  * params: options { open: Boolean, open: String }
+  * params: options { open: string, open: string, debug: boolean, strict: boolean }
     * open: template open tag
     * close: template close tag
+    * debug: debug mode
+    * strict: strict mode
   * return: { register: Function, unregister: Function, compile: Function }
-    * register(name: String, helper: Function): register helper
+    * register(name: string, helper: Function): register helper
       * name: the name of helper
       * helper: helper method
-    * unregister(name: String): unregister helper
+    * unregister(name: string): unregister helper
       * name: the name of helper
-    * compile(template: String): compile a template string
+    * compile(template: string): compile a template string
       * template: template string
         * `:` call helper
         * `@` read template data property
@@ -31,10 +33,10 @@
 template:
 
 ```html
-<% @items.forEach(function(item) { %>
+<% @items.forEach(function(item, index) { %>
   <img src="<%= item.src %>" alt="image" />
-  <%== :link(item.href, 'download') %>
-<% } %>
+  <%== :link(item.href, 'download-' + index) %>
+<% }) %>
 ```
 
 usage:

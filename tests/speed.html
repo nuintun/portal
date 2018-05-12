@@ -34,7 +34,7 @@
           name: 'Portal',
           tester: function () {
             var source = document.getElementById('portal').innerHTML;
-            var fn = new Portal().compile(source).render;
+            var fn = new Portal({ debug: false }).compile(source).render;
 
             for (var i = 0; i < number; i++) {
               fn(data);
@@ -45,7 +45,7 @@
           name: 'artTemplate',
           tester: function () {
             var source = document.getElementById('template').innerHTML;
-            var fn = template.compile(source, { debug: true });
+            var fn = template.compile(source, { debug: false });
 
             for (var i = 0; i < number; i++) {
               fn(data);
@@ -56,7 +56,7 @@
           name: 'juicer',
           tester: function () {
             juicer.set({
-              'errorhandling': true
+              errorhandling: false
             });
 
             var source = document.getElementById('juicer').innerHTML;
@@ -214,7 +214,7 @@
       </strong> 条数据 ×
       <strong>
         <script>document.write(number);</script>
-      </strong> 次渲染测试 [escape:false, debug:true]
+      </strong> 次渲染测试 [escape: false, debug: false]
     </p>
     <p>
       <em>建议在拥有 v8 javascript 引擎的 chrome 浏览器上进行测试，避免浏览器停止响应！</em>

@@ -20,7 +20,7 @@
             var source = document.getElementById('portal').innerHTML;
 
             for (var i = 0; i < number; i++) {
-              new Portal().compile(source)
+              new Portal({ debug: true }).compile(source)
             }
           }
         },
@@ -193,7 +193,7 @@
     <p>
       <strong>
         <script>document.write(number);</script>
-      </strong> 次编译测试 [cache:false, debug:true]
+      </strong> 次编译测试 [cache: false, debug: true]
     </p>
     <p>
       <em>建议在拥有 v8 javascript 引擎的 chrome 浏览器上进行测试，避免浏览器停止响应！</em>

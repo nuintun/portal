@@ -16,13 +16,23 @@
     "email": "nuintun@qq.com"
   },
   "license": "MIT",
-  "keywords": ["html", "tmpl", "render", "engine", "portal", "compile", "template"],
+  "keywords": [
+    "html",
+    "tmpl",
+    "render",
+    "engine",
+    "portal",
+    "compile",
+    "template"
+  ],
   "jsnext:main": "src/portal.js",
   "main": "dist/portal.js",
   "devDependencies": {
     "rollup": "^0.58.2",
     "uglify-es": "^3.3.9",
-    "benchmark": "^2.1.4"
+    "benchmark": "^2.1.4",
+    "typescript": "^2.8.3",
+    "rollup-plugin-typescript2": "^0.14.0"
   },
   "readmeFilename": "README.md"
 }

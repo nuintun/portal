@@ -1,14 +1,15 @@
 /*
-  ********** Juicer **********
-  ${A Fast template engine}
-  Project Home: http://juicer.name
+    ********** Juicer **********
+    ${A Fast template engine}
+    Project Home: http://juicer.name
 
-  Author: Guokai
-  Gtalk: badkaikai@gmail.com
-  Blog: http://benben.cc
-  Licence: MIT License
-  Version: 0.6.14
+    Author: Guokai
+    Gtalk: badkaikai@gmail.com
+    Blog: http://benben.cc
+    Licence: MIT License
+    Version: 0.6.15
 */
+
 (function() {
   // This is the main function for not only compiling but also rendering.
   // there's at least two parameters need to be provided, one is the tpl,
@@ -16,6 +17,7 @@
   // if only tpl was given, it'll return the compiled reusable function.
   // if tpl and data were given at the same time, it'll return the rendered
   // result immediately.
+
   var juicer = function() {
     var args = [].slice.call(arguments);
 
@@ -133,7 +135,7 @@
   };
 
   juicer.__cache = {};
-  juicer.version = '0.6.14';
+  juicer.version = '0.6.15';
   juicer.settings = {};
   juicer.documentHTML = '';
 
@@ -277,7 +279,7 @@
       if (_define.length > 1) {
         _name = _define.shift();
         _cluster = _define.shift().split(',');
-        _fn = '_method.' + _cluster.shift() + '.call({}, ' + [_name].concat(_cluster) + ')';
+        _fn = '_method.' + _cluster.shift() + '.call(this, ' + [_name].concat(_cluster) + ')';
       }
 
       return (

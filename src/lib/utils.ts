@@ -1,11 +1,11 @@
 /**
  * @module utils
  * @license MIT
- * @version 2017/12/18
+ * @version 2018/05/12
  */
 
 // HTML转义映射表
-var HTML_ESCAPE_MAP = {
+const HTML_ESCAPE_MAP: Object = {
   '&': '&amp;',
   '<': '&lt;',
   '>': '&gt;',
@@ -19,14 +19,14 @@ var HTML_ESCAPE_MAP = {
  * @param {string} html
  * @returns {string}
  */
-export function escapeHTML(html) {
-  return String(html).replace(/[&<>\'\"]/g, function(char) {
+export function escapeHTML(html: string): string {
+  return String(html).replace(/[&<>\'\"]/g, (char: string) => {
     return HTML_ESCAPE_MAP[char];
   });
 }
 
 // 元字符转码正则
-var RE_REGEX_ESCAPE = /[\[\]\\.^|()*+$:?!-]/g;
+const RE_REGEX_ESCAPE: RegExp = /[\[\]\\.^|()*+$:?!-]/g;
 
 /**
  * @function escapeRegex
@@ -34,6 +34,6 @@ var RE_REGEX_ESCAPE = /[\[\]\\.^|()*+$:?!-]/g;
  * @param {string} regex
  * @returns {string}
  */
-export function escapeRegex(regex) {
+export function escapeRegex(regex: string): string {
   return regex.replace(RE_REGEX_ESCAPE, '\\$&');
 }
