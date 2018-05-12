@@ -95,9 +95,9 @@ export default class Portal {
 
     // 解析模板
     // prettier-ignore
-    const code: string = (strict ? "'use strict';\n\n" : '')
-      + (debug ? 'var ' + VAR_LINE + ' = 1;\n' : '')
-      + 'var ' + VAR_OUTPUT + " = '';\n\n"
+    const code: string = (strict ? "  'use strict';\n\n" : '')
+      + (debug ? '  var ' + VAR_LINE + ' = 1;\n' : '')
+      + '  var ' + VAR_OUTPUT + " = '';\n\n"
       // 入口
       + (debug ? 'try {\n  ' : '')
       // 模板拼接

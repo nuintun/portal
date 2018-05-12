@@ -158,9 +158,9 @@
           var strict = context['<strict>'];
           // 解析模板
           // prettier-ignore
-          var code = (strict ? "'use strict';\n\n" : '')
-              + (debug ? 'var ' + VAR_LINE + ' = 1;\n' : '')
-              + 'var ' + VAR_OUTPUT + " = '';\n\n"
+          var code = (strict ? "  'use strict';\n\n" : '')
+              + (debug ? '  var ' + VAR_LINE + ' = 1;\n' : '')
+              + '  var ' + VAR_OUTPUT + " = '';\n\n"
               // 入口
               + (debug ? 'try {\n  ' : '')
               // 模板拼接
