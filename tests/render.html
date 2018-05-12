@@ -16,7 +16,7 @@
        * @version 2018/05/12
        */
       var template =
-        '<% @items.forEach(function(item, index) { %>' +
+        '<% @items.forEach(function(item, index) { %>\n' +
         '<img src="<%= item.src %>" alt="image" />\n' +
         '<%== :link(item.href, "download-" + index) %>\n' +
         '<% }) %>';
