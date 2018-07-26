@@ -23,7 +23,7 @@
     "rollup": "^0.62.0",
     "uglify-es": "^3.3.9",
     "benchmark": "^2.1.4",
-    "typescript": "^2.8.3",
+    "typescript": "^2.9.2",
     "rollup-plugin-typescript2": "^0.15.0"
   },
   "readmeFilename": "README.md"
