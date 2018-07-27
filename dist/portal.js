@@ -4,7 +4,7 @@
  * @license MIT
  * @version 0.0.1
  * @description A micro and fast html template engine.
- * @see https://flexui.github.io/portal
+ * @see https://flexui.github.io/portal#readme
  */
 
 (function (global, factory) {

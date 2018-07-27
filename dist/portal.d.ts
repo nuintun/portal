@@ -1,4 +1,9 @@
 /**
+ * @module portal
+ * @license MIT
+ * @version 2018/05/12
+ */
+/**
  * @class Portal
  */
 export default class Portal {

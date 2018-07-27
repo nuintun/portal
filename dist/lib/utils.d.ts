@@ -1,4 +1,9 @@
 /**
+ * @module utils
+ * @license MIT
+ * @version 2018/05/12
+ */
+/**
  * @function escapeHTML
  * @description HTML转义，防止XSS攻击
  * @param {string} html

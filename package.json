@@ -6,25 +6,32 @@
     "name": "nuintun",
     "email": "nuintun@qq.com"
   },
-  "homepage": "https://flexui.github.io/portal",
+  "homepage": "https://flexui.github.io/portal#readme",
   "repository": {
     "type": "git",
     "url": "git://github.com/flexui/portal.git"
   },
   "bugs": {
-    "url": "https://github.com/flexui/portal/issues",
-    "email": "nuintun@qq.com"
+    "url": "https://github.com/flexui/portal/issues"
   },
   "license": "MIT",
-  "keywords": ["html", "tmpl", "render", "engine", "portal", "compile", "template"],
-  "jsnext:main": "src/portal.js",
+  "keywords": [
+    "html",
+    "tmpl",
+    "render",
+    "engine",
+    "portal",
+    "compile",
+    "template"
+  ],
   "main": "dist/portal.js",
+  "jsnext:main": "src/portal.js",
   "devDependencies": {
-    "rollup": "^0.62.0",
+    "rollup": "^0.63.4",
     "uglify-es": "^3.3.9",
     "benchmark": "^2.1.4",
-    "typescript": "^2.8.3",
-    "rollup-plugin-typescript2": "^0.15.0"
+    "typescript": "^2.9.2",
+    "rollup-plugin-typescript2": "^0.16.1"
   },
   "readmeFilename": "README.md"
 }
