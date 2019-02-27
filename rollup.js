@@ -62,10 +62,10 @@ const inputOptions = {
 
 const outputOptions = {
   banner,
-  format: 'umd',
   indent: true,
   strict: true,
   legacy: true,
+  format: 'umd',
   name: 'Portal',
   amd: { id: 'portal' },
   file: 'dist/portal.js'
