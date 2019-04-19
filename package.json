@@ -27,11 +27,11 @@
   "main": "dist/portal.js",
   "jsnext:main": "src/portal.js",
   "devDependencies": {
-    "rollup": "^1.4.0",
-    "terser": "^3.16.1",
+    "rollup": "^1.10.0",
+    "terser": "^3.17.0",
     "benchmark": "^2.1.4",
-    "typescript": "^3.3.3333",
-    "rollup-plugin-typescript2": "^0.19.3"
+    "typescript": "^3.4.4",
+    "rollup-plugin-typescript2": "^0.20.1"
   },
   "readmeFilename": "README.md"
 }

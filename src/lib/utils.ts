@@ -6,11 +6,11 @@
 
 // HTML转义映射表
 const HTML_ESCAPE_MAP: Object = {
-  '&': '&amp;',
   '<': '&lt;',
   '>': '&gt;',
-  '\x22': '&#x22;',
-  '\x27': '&#x27;'
+  '&': '&amp;',
+  "'": '&#39;',
+  '"': '&quot;'
 };
 
 /**
@@ -20,7 +20,7 @@ const HTML_ESCAPE_MAP: Object = {
  * @returns {string}
  */
 export function escapeHTML(html: string): string {
-  return String(html).replace(/[&<>\'\"]/g, (char: string) => {
+  return String(html).replace(/[<>&'"]/g, (char: string) => {
     return HTML_ESCAPE_MAP[char];
   });
 }

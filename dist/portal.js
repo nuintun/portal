@@ -58,11 +58,11 @@
    */
   // HTML转义映射表
   var HTML_ESCAPE_MAP = {
-      '&': '&amp;',
       '<': '&lt;',
       '>': '&gt;',
-      '\x22': '&#x22;',
-      '\x27': '&#x27;'
+      '&': '&amp;',
+      "'": '&#39;',
+      '"': '&quot;'
   };
   /**
    * @function escapeHTML
@@ -71,7 +71,7 @@
    * @returns {string}
    */
   function escapeHTML(html) {
-      return String(html).replace(/[&<>\'\"]/g, function (char) {
+      return String(html).replace(/[<>&'"]/g, function (char) {
           return HTML_ESCAPE_MAP[char];
       });
   }
