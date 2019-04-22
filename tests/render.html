@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Render</title>
     <script src="../dist/portal.min.js"></script>
   </head>
@@ -24,8 +24,8 @@
       // Create a new instance
       var portal = new Portal({ debug: false });
 
-      // Register helper
-      portal.register('link', (href, text) => {
+      // Inject helper
+      portal.inject('link', (href, text) => {
         return '<a href="' + href + '" title="' + text + '">' + text + '</a>';
       });
 
@@ -56,8 +56,8 @@
 
       html && console.log('result:\n\n' + html);
 
-      // Unregister helper
-      portal.unregister('link');
+      // Eject helper
+      portal.eject('link');
     </script>
   </body>
 </html>

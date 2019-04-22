@@ -16,8 +16,8 @@ const template = `
 // Create a new instance
 const portal = new Portal({ debug: true });
 
-// Register helper
-portal.register('link', (href, text) => {
+// Inject helper
+portal.inject('link', (href, text) => {
   return `<a href="${href}" title="${text}">${text}</a>`;
 });
 
@@ -35,5 +35,5 @@ const html = view.render({
 
 html && console.log(html);
 
-// Unregister helper
-portal.unregister('link');
+// Eject helper
+portal.eject('link');

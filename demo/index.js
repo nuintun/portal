@@ -51,7 +51,7 @@ const view = `
 
 const portal = new Portal();
 
-portal.register('link', function(title, href) {
+portal.inject('link', function(title, href) {
   return '<a title="' + title + '" href="' + href + '">' + title + '</a>';
 });
 
