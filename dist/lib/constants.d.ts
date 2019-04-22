@@ -1,7 +1,7 @@
 /**
  * @module constants
  * @license MIT
- * @version 2018/05/12
+ * @author nuintun
  */
 export declare const RE_LINE_SPLIT: RegExp;
 export declare const RE_TRIM_SPACE: RegExp;

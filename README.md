@@ -12,11 +12,11 @@
     * close: template close tag
     * debug: debug mode
     * strict: strict mode
-  * return: { register: Function, unregister: Function, compile: Function }
-    * register(name: string, helper: Function): register helper
+  * return: { inject: Function, eject: Function, compile: Function }
+    * inject(name: string, helper: Function): inject helper
       * name: the name of helper
       * helper: helper method
-    * unregister(name: string): unregister helper
+    * eject(name: string): eject helper
       * name: the name of helper
     * compile(template: string): compile a template string
       * template: template string
@@ -45,8 +45,8 @@ usage:
 // Create a new instance
 var portal = new Portal();
 
-// Register helper
-portal.register('link', function(href, text) {
+// Inject helper
+portal.inject('link', function(href, text) {
   return '<a href="' + href + '" title="' + text + '">' + text + '</a>';
 });
 
@@ -64,8 +64,8 @@ console.log(
   })
 );
 
-// Unregister helper
-portal.unregister('link');
+// Eject helper
+portal.eject('link');
 ```
 
 ### Benchmark

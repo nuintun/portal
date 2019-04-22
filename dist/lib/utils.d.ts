@@ -1,7 +1,7 @@
 /**
  * @module utils
  * @license MIT
- * @version 2018/05/12
+ * @author nuintun
  */
 /**
  * @function escapeHTML

@@ -1,8 +1,12 @@
 /**
  * @module portal
  * @license MIT
- * @version 2018/05/12
+ * @author nuintun
  */
+interface Render {
+    (data: any): string;
+    toString(): string;
+}
 /**
  * @class Portal
  */
@@ -31,23 +35,24 @@ export default class Portal {
      * @returns {Object} { render }
      */
     compile(view: string): {
-        render: Function;
+        render: Render;
     };
     /**
      * @public
-     * @method register
+     * @method inject
      * @description 添加辅助函数
      * @param {string} name 辅助函数名称
      * @param {Function} fn 辅助函数
      * @returns {Portal} Portal
      */
-    register(name: string, fn: Function): Portal;
+    inject(name: string, fn: Function): Portal;
     /**
      * @public
-     * @method unregister
+     * @method eject
      * @description 移除辅助函数
      * @param {string} name 辅助函数名称
      * @returns {Portal} Portal
      */
-    unregister(name: string): Portal;
+    eject(name: string): Portal;
 }
+export {};

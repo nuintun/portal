@@ -2,7 +2,7 @@
  * @module portal
  * @author nuintun
  * @license MIT
- * @version 0.0.1
+ * @version 1.0.0
  * @description A micro and fast html template engine.
  * @see https://flexui.github.io/portal#readme
  */
@@ -16,7 +16,7 @@
   /**
    * @module constants
    * @license MIT
-   * @version 2018/05/12
+   * @author nuintun
    */
   // 分行正则
   var RE_LINE_SPLIT = /\n|\r\n/g;
@@ -54,7 +54,7 @@
   /**
    * @module utils
    * @license MIT
-   * @version 2018/05/12
+   * @author nuintun
    */
   // HTML转义映射表
   var HTML_ESCAPE_MAP = {
@@ -71,9 +71,7 @@
    * @returns {string}
    */
   function escapeHTML(html) {
-      return String(html).replace(/[<>&'"]/g, function (char) {
-          return HTML_ESCAPE_MAP[char];
-      });
+      return String(html).replace(/[<>&'"]/g, function (char) { return HTML_ESCAPE_MAP[char]; });
   }
   // 元字符转码正则
   var RE_REGEX_ESCAPE = /[\[\]\\.^|()*+$:?!-]/g;
@@ -90,7 +88,7 @@
   /**
    * @module portal
    * @license MIT
-   * @version 2018/05/12
+   * @author nuintun
    */
   /**
    * @class Portal
@@ -176,9 +174,7 @@
                   // 空格去除过滤
                   .replace(RE_TRIM_SPACE, '')
                   // 拆行
-                  .replace(RE_LINE_SPLIT, function () {
-                  return "';\n  " + (debug ? VAR_LINE + ' = ' + ++row + ';\n  ' : '') + VAR_OUTPUT + " += '\\n";
-              })
+                  .replace(RE_LINE_SPLIT, function () { return "';\n  " + (debug ? VAR_LINE + ' = ' + ++row + ';\n  ' : '') + VAR_OUTPUT + " += '\\n"; })
                   // 非转义输出
                   .replace(RE_ORIGIN_OUTPUT, "' + ($1) + '")
                   // 转义输出
@@ -208,7 +204,7 @@
           var compiler = new Function(VAR_DATA, VAR_ESCAPE, VAR_HELPERS, code.replace(new RegExp('\x20*' + escapeRegex(VAR_OUTPUT + " += '';") + '\n', 'g'), ''));
           /**
            * @function render
-           * @param {Object|any[]} data 模板数据
+           * @param {any} data 模板数据
            * @returns {string} string
            */
           var render = function (data) { return compiler.call(data, data, escapeHTML, context['<helpers>']); };
@@ -223,24 +219,24 @@
       };
       /**
        * @public
-       * @method register
+       * @method inject
        * @description 添加辅助函数
        * @param {string} name 辅助函数名称
        * @param {Function} fn 辅助函数
        * @returns {Portal} Portal
        */
-      Portal.prototype.register = function (name, fn) {
+      Portal.prototype.inject = function (name, fn) {
           this['<helpers>'][name] = fn;
           return this;
       };
       /**
        * @public
-       * @method unregister
+       * @method eject
        * @description 移除辅助函数
        * @param {string} name 辅助函数名称
        * @returns {Portal} Portal
        */
-      Portal.prototype.unregister = function (name) {
+      Portal.prototype.eject = function (name) {
           delete this['<helpers>'][name];
           return this;
       };

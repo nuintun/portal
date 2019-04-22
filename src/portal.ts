@@ -1,7 +1,7 @@
 /**
  * @module portal
  * @license MIT
- * @version 2018/05/12
+ * @author nuintun
  */
 
 import {
@@ -22,6 +22,11 @@ import {
   RE_DYNAMIC_VARIABLE
 } from './lib/constants';
 import { escapeHTML, escapeRegex } from './lib/utils';
+
+interface Render {
+  (data: any): string;
+  toString(): string;
+}
 
 /**
  * @class Portal
@@ -83,7 +88,7 @@ export default class Portal {
    * @param {string} view 视图模板
    * @returns {Object} { render }
    */
-  compile(view: string): { render: Function } {
+  compile(view: string): { render: Render } {
     // 行数
     let row: number = 1;
     // 实例指针
@@ -113,9 +118,7 @@ export default class Portal {
       // 空格去除过滤
       .replace(RE_TRIM_SPACE, '')
       // 拆行
-      .replace(RE_LINE_SPLIT, function() {
-        return "';\n  " + (debug ? VAR_LINE + ' = ' + ++row + ';\n  ': '') + VAR_OUTPUT + " += '\\n";
-      })
+      .replace(RE_LINE_SPLIT, () => "';\n  " + (debug ? VAR_LINE + ' = ' + ++row + ';\n  ': '') + VAR_OUTPUT + " += '\\n")
       // 非转义输出
       .replace(RE_ORIGIN_OUTPUT, "' + ($1) + '")
       // 转义输出
@@ -152,10 +155,10 @@ export default class Portal {
 
     /**
      * @function render
-     * @param {Object|any[]} data 模板数据
+     * @param {any} data 模板数据
      * @returns {string} string
      */
-    const render = (data: Object | any[]): string => compiler.call(data, data, escapeHTML, context['<helpers>']);
+    const render: Render = (data: any): string => compiler.call(data, data, escapeHTML, context['<helpers>']);
 
     /**
      * @method toString
@@ -170,13 +173,13 @@ export default class Portal {
 
   /**
    * @public
-   * @method register
+   * @method inject
    * @description 添加辅助函数
    * @param {string} name 辅助函数名称
    * @param {Function} fn 辅助函数
    * @returns {Portal} Portal
    */
-  register(name: string, fn: Function): Portal {
+  inject(name: string, fn: Function): Portal {
     this['<helpers>'][name] = fn;
 
     return this;
@@ -184,12 +187,12 @@ export default class Portal {
 
   /**
    * @public
-   * @method unregister
+   * @method eject
    * @description 移除辅助函数
    * @param {string} name 辅助函数名称
    * @returns {Portal} Portal
    */
-  unregister(name: string): Portal {
+  eject(name: string): Portal {
     delete this['<helpers>'][name];
 
     return this;

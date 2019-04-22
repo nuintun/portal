@@ -1,11 +1,11 @@
 /**
  * @module utils
  * @license MIT
- * @version 2018/05/12
+ * @author nuintun
  */
 
 // HTML转义映射表
-const HTML_ESCAPE_MAP: Object = {
+const HTML_ESCAPE_MAP: { [key: string]: string } = {
   '<': '&lt;',
   '>': '&gt;',
   '&': '&amp;',
@@ -20,9 +20,7 @@ const HTML_ESCAPE_MAP: Object = {
  * @returns {string}
  */
 export function escapeHTML(html: string): string {
-  return String(html).replace(/[<>&'"]/g, (char: string) => {
-    return HTML_ESCAPE_MAP[char];
-  });
+  return String(html).replace(/[<>&'"]/g, (char: string) => HTML_ESCAPE_MAP[char]);
 }
 
 // 元字符转码正则

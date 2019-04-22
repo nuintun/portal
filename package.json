@@ -1,6 +1,6 @@
 {
   "name": "portal",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "A micro and fast html template engine.",
   "author": {
     "name": "nuintun",
@@ -27,7 +27,7 @@
   "main": "dist/portal.js",
   "jsnext:main": "src/portal.js",
   "devDependencies": {
-    "rollup": "^1.10.0",
+    "rollup": "^1.10.1",
     "terser": "^3.17.0",
     "benchmark": "^2.1.4",
     "typescript": "^3.4.4",
