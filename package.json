@@ -30,7 +30,7 @@
     "rollup": "^1.10.1",
     "terser": "^3.17.0",
     "benchmark": "^2.1.4",
-    "typescript": "^3.4.4",
+    "typescript": "^3.4.5",
     "rollup-plugin-typescript2": "^0.20.1"
   },
   "readmeFilename": "README.md"
