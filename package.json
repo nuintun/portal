@@ -28,7 +28,7 @@
   "jsnext:main": "src/portal.js",
   "devDependencies": {
     "rollup": "^1.10.1",
-    "terser": "^3.17.0",
+    "terser": "^4.1.2",
     "benchmark": "^2.1.4",
     "typescript": "^3.4.4",
     "rollup-plugin-typescript2": "^0.20.1"
